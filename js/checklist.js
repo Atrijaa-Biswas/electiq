@@ -155,6 +155,9 @@ const handleShare = async () => {
 // ─── Init ─────────────────────────────────────────────────────────────────
 
 const init = async () => {
+  // ── Auth guard: redirect to login if not authenticated ──────────────────
+  await window.HeaderController.init();
+
   // Set certificate date
   const dateEl = qs('#cert-date');
   if (dateEl) {
@@ -163,7 +166,7 @@ const init = async () => {
     })}`;
   }
 
-  // Initialize Firebase
+  // Initialize Firestore
   try {
     await window.FirebaseService?.init();
   } catch (_) { /* graceful */ }

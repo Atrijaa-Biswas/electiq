@@ -369,8 +369,14 @@ const sendChatMessage = async () => {
 // ─── Initialisation ───────────────────────────────────────────────────────
 
 const init = async () => {
-  // Load prior explored stages from Firebase
+  // ── Auth guard: redirect to login if not authenticated ─────────────────
+  // HeaderController.init() waits for Firebase Auth to resolve, reveals the
+  // body only after the check passes, and injects the user avatar/dropdown.
+  await window.HeaderController.init();
+
+  // Initialize Firestore and load prior explored stages
   try {
+    await window.FirebaseService?.init();
     const progress = await window.FirebaseService?.loadProgress();
     if (progress?.exploredStages) {
       _exploredStages = new Set(progress.exploredStages);

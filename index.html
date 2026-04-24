@@ -6,12 +6,13 @@
   <meta name="description" content="ElectIQ — An interactive election education platform for Indian voters. Learn the full Indian election lifecycle, explore AI-powered insights, and become a confident first-time voter.">
   <meta name="theme-color" content="#F5ECD7">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com;">
+    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com https://apis.google.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://accounts.google.com;">
   <title>ElectIQ — India's Interactive Election Education Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/auth.css">
   <!-- Google Fonts loaded in base.css via @import with font-display:swap -->
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=REPLACE_GA4_ID"></script>
@@ -23,6 +24,12 @@
   </script>
 </head>
 <body>
+
+  <!-- Mobile translate bar (visible only on < 768px) -->
+  <div class="translate-bar-mobile" aria-label="Language selector">
+    <span class="translate-label" aria-hidden="true">Translate:</span>
+    <div id="google_translate_element_mobile"></div>
+  </div>
 
   <!-- ═══ HEADER ═══ -->
   <header class="site-header" role="banner">
@@ -57,7 +64,10 @@
       </nav>
 
       <div class="header-right">
-        <div id="google_translate_element" aria-label="Language selector"></div>
+        <div class="translate-container" aria-label="Language selector">
+          <span class="translate-label" aria-hidden="true">Translate:</span>
+          <div id="google_translate_element"></div>
+        </div>
       </div>
     </div>
   </header>
@@ -108,13 +118,20 @@
           Understand the election process, one step at a time.
         </p>
 
-        <!-- Ballot-style CTA Buttons -->
-        <div class="cta-group">
-          <a href="flowmap.html" class="btn btn-ballot" id="cta-flowmap" aria-label="Explore the Election Flow Map">
+        <!-- Ballot-style CTA Buttons — shown to unauthenticated visitors -->
+        <div class="cta-group" id="cta-guest">
+          <a href="login.html" class="btn btn-ballot" id="cta-flowmap" aria-label="Sign in and explore the Election Flow Map">
             Explore the Flow Map
           </a>
-          <a href="learn.html" class="btn btn-ballot" id="cta-learn" aria-label="Begin structured learning modules">
+          <a href="login.html" class="btn btn-ballot" id="cta-learn" aria-label="Sign in and begin structured learning modules">
             Begin Learning
+          </a>
+        </div>
+
+        <!-- Shown only to signed-in users (hidden by default, revealed by JS) -->
+        <div class="cta-group" id="cta-auth" style="display:none;">
+          <a href="flowmap.html" class="btn btn-ballot" id="cta-continue" aria-label="Continue your learning journey">
+            Continue Learning →
           </a>
         </div>
       </div>
@@ -198,12 +215,84 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Firebase SDK for auth state check on landing page -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import {
+      getAuth, onAuthStateChanged,
+      GoogleAuthProvider, signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      updateProfile, sendEmailVerification,
+      signOut
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    window.firebaseApp       = { initializeApp };
+    window.firebaseAuth      = {
+      getAuth, onAuthStateChanged,
+      GoogleAuthProvider, signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      updateProfile, sendEmailVerification,
+      signOut
+    };
+    window.firebaseFirestore = { getFirestore, doc, setDoc, getDoc, serverTimestamp };
+  </script>
   <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <!-- On the landing page: show user avatar if logged in, swap CTA buttons -->
+  <script>
+    (async () => {
+      const user = await window.AuthService.initAuth();
+      if (user) {
+        // Swap CTAs — logged-in users get "Continue Learning"
+        const guestCta = document.getElementById('cta-guest');
+        const authCta  = document.getElementById('cta-auth');
+        if (guestCta) guestCta.style.display = 'none';
+        if (authCta)  authCta.style.display  = '';
+
+        // Show user avatar in header
+        const headerRight = document.querySelector('.header-right');
+        if (headerRight) {
+          const initials = window.AuthService.getUserInitials(user);
+          const name     = user.displayName || user.email?.split('@')[0] || 'User';
+          const email    = user.email || '';
+          const photoURL = user.photoURL || '';
+          const menuEl   = document.createElement('div');
+          menuEl.className = 'user-menu';
+          const avatarHTML = photoURL
+            ? `<div class="user-dropdown-avatar"><img src="${photoURL}" alt="${name}" referrerpolicy="no-referrer"></div>`
+            : `<div class="user-dropdown-avatar-initials">${initials}</div>`;
+          menuEl.innerHTML = `
+            <button class="user-avatar-btn" id="user-avatar-btn" type="button"
+              aria-haspopup="true" aria-expanded="false" aria-label="User menu for ${name}">
+              ${photoURL ? `<img src="${photoURL}" alt="${name}" referrerpolicy="no-referrer">` : initials}
+            </button>
+            <div class="user-dropdown" id="user-dropdown" role="menu" aria-label="User options">
+              ${avatarHTML}
+              <div class="user-dropdown-name" title="${name}">${name}</div>
+              <div class="user-dropdown-email" title="${email}">${email}</div>
+              <hr class="user-dropdown-divider">
+              <div class="user-dropdown-actions">
+                <button class="btn-signout" id="btn-signout" type="button" role="menuitem">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  Sign Out
+                </button>
+              </div>
+            </div>`;
+          headerRight.insertBefore(menuEl, headerRight.firstChild);
+          const btn = document.getElementById('user-avatar-btn');
+          const dd  = document.getElementById('user-dropdown');
+          btn.addEventListener('click', e => { e.stopPropagation(); dd.classList.toggle('open'); btn.setAttribute('aria-expanded', dd.classList.contains('open')); });
+          document.addEventListener('click', () => dd.classList.remove('open'));
+          document.addEventListener('keydown', e => { if (e.key === 'Escape') dd.classList.remove('open'); });
+          document.getElementById('btn-signout')?.addEventListener('click', () => window.AuthService.signOut());
+        }
+      }
+    })();
+  </script>
   <script src="js/translate.js"></script>
-  <!-- Google Translate -->
   <script async src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <!-- GA4 init after config loads -->
   <script>
     (function() {
       const cfg = window.ELECTIQ_CONFIG;

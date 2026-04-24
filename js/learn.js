@@ -193,7 +193,10 @@ const advanceModule = async (newIndex) => {
 // ─── Init ─────────────────────────────────────────────────────────────────
 
 const init = async () => {
-  // Initialize Firebase and load progress
+  // ── Auth guard: redirect to login if not authenticated ──────────────────
+  await window.HeaderController.init();
+
+  // Initialize Firestore and load progress
   try {
     await window.FirebaseService?.init();
     const progress = await window.FirebaseService?.loadProgress();

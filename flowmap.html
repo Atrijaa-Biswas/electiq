@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="ElectIQ Flow Map — Explore the complete Indian election lifecycle as an interactive visual flowchart. Click any stage for an AI-powered deep dive.">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com;">
+    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com https://apis.google.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://accounts.google.com;">
+  <!-- body hidden until auth guard passes — prevents flash of protected content -->
+  <style>body { opacity: 0; transition: opacity 200ms ease; }</style>
   <title>Flow Map — ElectIQ</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/flowmap.css">
@@ -13,6 +15,12 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
 </head>
 <body>
+
+  <!-- Mobile translate bar -->
+  <div class="translate-bar-mobile" aria-label="Language selector">
+    <span class="translate-label" aria-hidden="true">Translate:</span>
+    <div id="google_translate_element_mobile"></div>
+  </div>
 
   <!-- ═══ HEADER ═══ -->
   <header class="site-header" role="banner">
@@ -44,7 +52,10 @@
         </ul>
       </nav>
       <div class="header-right">
-        <div id="google_translate_element" aria-label="Language selector"></div>
+        <div class="translate-container" aria-label="Language selector">
+          <span class="translate-label" aria-hidden="true">Translate:</span>
+          <div id="google_translate_element"></div>
+        </div>
       </div>
     </div>
   </header>
@@ -136,23 +147,37 @@
     </div>
   </footer>
 
-  <!-- Scripts — Firebase SDK loaded here since this page uses it -->
+  <!-- Firebase SDK with full auth exports for protected pages -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
     import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-    window.firebaseApp = { initializeApp };
+    import {
+      getAuth, onAuthStateChanged,
+      GoogleAuthProvider, signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      updateProfile, sendEmailVerification,
+      signOut
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    window.firebaseApp       = { initializeApp };
     window.firebaseFirestore = { getFirestore, doc, setDoc, getDoc, serverTimestamp };
-    window.firebaseAuth = { getAuth, signInAnonymously };
+    window.firebaseAuth      = {
+      getAuth, onAuthStateChanged,
+      GoogleAuthProvider, signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      updateProfile, sendEmailVerification,
+      signOut
+    };
   </script>
   <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/header.js"></script>
   <script src="js/gemini.js"></script>
   <script src="js/firebase.js"></script>
   <script src="js/translate.js"></script>
   <script src="js/flowmap.js"></script>
   <script async src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <script>
-    (function(){const c=window.ELECTIQ_CONFIG;if(c&&c.ga4MeasurementId&&c.ga4MeasurementId!=='YOUR_GA4_MEASUREMENT_ID')gtag('config',c.ga4MeasurementId);})();
-  </script>
+  <script>(function(){const c=window.ELECTIQ_CONFIG;if(c&&c.ga4MeasurementId&&c.ga4MeasurementId!=='YOUR_GA4_MEASUREMENT_ID')gtag('config',c.ga4MeasurementId);})();</script>
 </body>
 </html>

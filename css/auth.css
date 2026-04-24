@@ -1,0 +1,572 @@
+/* auth.css — Login page styles
+   Inherits all design tokens from base.css (:root variables)
+   Vintage Indian democracy aesthetic — stamp card, form fields */
+
+/* --- Page Layout --- */
+.auth-page {
+  min-height: calc(100vh - var(--header-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+/* --- Login Card --- */
+.auth-card {
+  background: var(--khadi);
+  border: 2px solid var(--sepia);
+  border-radius: var(--radius-md);
+  padding: var(--space-2xl) var(--space-xl);
+  width: 100%;
+  max-width: 420px;
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 6px rgba(245, 236, 215, 0.8),
+    0 0 0 8px rgba(123, 94, 58, 0.15);
+  position: relative;
+  /* Ruled-line texture matching other cards */
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px,
+    rgba(123, 94, 58, 0.05) 32px
+  );
+  animation: pageEntry var(--transition-slow) ease forwards;
+}
+
+/* Inner decorative stamp border */
+.auth-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed var(--sepia-light);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* --- Card Header --- */
+.auth-card-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.auth-logo-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px dashed var(--sepia);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-md);
+  position: relative;
+  background: rgba(245, 236, 215, 0.6);
+}
+
+.auth-logo-circle::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 94, 58, 0.3);
+}
+
+.auth-logo-text {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: var(--space-xs);
+}
+
+.auth-logo-text em {
+  color: var(--saffron);
+  font-style: normal;
+}
+
+.auth-tagline {
+  font-family: var(--font-stamp);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--sepia);
+  margin-bottom: var(--space-md);
+}
+
+/* Thin tricolor divider */
+.auth-tricolor {
+  height: 3px;
+  display: flex;
+  margin: 0 var(--space-lg) var(--space-lg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.auth-tricolor span { flex: 1; }
+.auth-tricolor span:nth-child(1) { background: var(--saffron); }
+.auth-tricolor span:nth-child(2) { background: rgba(245,236,215,0.8); border: 1px solid var(--sepia-light); }
+.auth-tricolor span:nth-child(3) { background: var(--india-green); }
+
+/* --- Google Sign-In Button --- */
+.btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: 13px var(--space-lg);
+  background: var(--khadi);
+  border: 2px solid var(--sepia);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--navy);
+  cursor: pointer;
+  min-height: 52px;
+  transition: background var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal);
+  margin-bottom: var(--space-lg);
+}
+
+.btn-google:hover:not(:disabled) {
+  background: var(--saffron);
+  color: var(--white);
+  border-color: var(--saffron-dark);
+}
+
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Google "G" icon container */
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* --- OR Divider --- */
+.auth-or {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.auth-or::before,
+.auth-or::after {
+  content: '';
+  flex: 1;
+  border-top: 1px dashed var(--sepia-light);
+}
+
+.auth-or span {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ash);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* --- Email/Password Form --- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Expand section for register extra field */
+.auth-register-extra {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease;
+}
+.auth-register-extra.expanded {
+  max-height: 100px;
+}
+
+/* Form field — bottom-border only style */
+.form-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-label {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--sepia);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.form-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--sepia);
+  padding: var(--space-sm) 0;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--navy);
+  outline: none;
+  border-radius: 0;
+  width: 100%;
+  min-height: 44px;
+  transition: border-color var(--transition-fast);
+}
+
+.form-input::placeholder {
+  color: var(--ash);
+  font-style: italic;
+}
+
+.form-input:focus {
+  border-bottom-color: var(--saffron);
+}
+
+/* Password field wrapper (for show/hide toggle) */
+.input-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-password-wrap .form-input {
+  padding-right: var(--space-xl);
+}
+
+.btn-pw-toggle {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  color: var(--ash);
+  display: flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: flex-end;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+.btn-pw-toggle:hover { color: var(--saffron); }
+
+/* --- Submit Button --- */
+.btn-auth-submit {
+  width: 100%;
+  padding: 14px var(--space-lg);
+  background: var(--saffron);
+  color: var(--white);
+  border: 2px solid var(--sepia);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.btn-auth-submit:hover:not(:disabled) {
+  background: var(--saffron-dark);
+  transform: translateY(-1px);
+}
+
+.btn-auth-submit:disabled {
+  background: var(--ash);
+  border-color: var(--ash);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- Toggle Link (Sign In ↔ Register) --- */
+.auth-toggle-link {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  color: var(--ash);
+  margin-top: var(--space-md);
+}
+
+.auth-toggle-link button {
+  background: none;
+  border: none;
+  color: var(--saffron);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-weight: 600;
+}
+.auth-toggle-link button:hover { color: var(--saffron-dark); }
+
+/* --- Inline Spinner (CSS only) --- */
+.auth-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.btn-google .auth-spinner {
+  border-color: rgba(224, 123, 57, 0.3);
+  border-top-color: var(--saffron);
+}
+
+/* --- Error Card --- */
+.auth-error {
+  background: rgba(192, 57, 43, 0.06);
+  border-left: 3px solid var(--ballot-red);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--ballot-red);
+  display: none;
+  animation: stampIn 200ms ease-out;
+  line-height: 1.5;
+  margin-top: var(--space-sm);
+}
+.auth-error.visible { display: block; }
+
+/* --- Verification Notice --- */
+.auth-verify-notice {
+  background: rgba(45, 106, 79, 0.06);
+  border: 1px dashed var(--india-green);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  display: none;
+  text-align: center;
+  animation: stampIn 300ms ease-out;
+  margin-top: var(--space-md);
+}
+.auth-verify-notice.visible { display: block; }
+
+.auth-verify-notice p {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--india-green);
+  margin: var(--space-sm) 0 0;
+  line-height: 1.5;
+}
+
+.verify-icon {
+  color: var(--india-green);
+  font-size: 1.5rem;
+  display: block;
+}
+
+.btn-resend {
+  background: none;
+  border: none;
+  color: var(--saffron);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-top: var(--space-sm);
+  display: inline-block;
+}
+.btn-resend:hover { color: var(--saffron-dark); }
+
+/* ─── User Avatar / Dropdown (shared header addition) ─── */
+
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Avatar trigger button */
+.user-avatar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--sepia);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--saffron);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--white);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  flex-shrink: 0;
+  padding: 0;
+  min-width: 36px;
+  min-height: 36px;
+}
+.user-avatar-btn:hover {
+  border-color: var(--saffron);
+  box-shadow: 0 0 0 3px rgba(224,123,57,0.25);
+}
+.user-avatar-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* ── Dropdown Panel ── */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 220px;
+  background: var(--khadi);
+  border: 1.5px solid var(--sepia);
+  border-radius: 6px;
+  box-shadow: 4px 4px 12px rgba(123, 94, 58, 0.20);
+  z-index: var(--z-modal);
+  padding: 16px;
+  /* Hidden by default — shown via .open class */
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.user-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Avatar inside dropdown (large, centered) ── */
+.user-dropdown-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--saffron);
+  overflow: hidden;
+  display: block;
+  margin: 0 auto 10px;
+  background: var(--saffron);
+  flex-shrink: 0;
+}
+/* Photo avatar */
+.user-dropdown-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+/* Initials fallback */
+.user-dropdown-avatar-initials {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--saffron);
+  background: var(--saffron);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+/* ── Name ── */
+.user-dropdown-name {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  text-align: center;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Email ── */
+.user-dropdown-email {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--ash);
+  text-align: center;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Dashed Divider ── */
+.user-dropdown-divider {
+  border: none;
+  border-top: 1px dashed var(--sepia);
+  margin: 8px 0;
+}
+
+/* ── Sign Out Button ── */
+.btn-signout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 0;
+  background: transparent;
+  border: 1.5px solid var(--sepia);
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--sepia);
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  min-height: 40px;
+}
+.btn-signout svg {
+  flex-shrink: 0;
+  color: var(--sepia);
+  transition: color 200ms ease;
+}
+.btn-signout:hover {
+  background: var(--ballot-red);
+  color: var(--white);
+  border-color: var(--ballot-red);
+}
+.btn-signout:hover svg {
+  color: var(--white);
+}
+
+/* ── Wrapper for info + actions inside dropdown ── */
+.user-dropdown-info {
+  /* Info section is now directly in the dropdown card, no extra padding needed */
+}
+.user-dropdown-actions {
+  /* Actions sit directly after the divider */
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: var(--space-xl) var(--space-md);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+  }
+  .user-dropdown {
+    right: -8px; /* slight bleed prevention on narrow screens */
+    min-width: 200px;
+  }
+}
+

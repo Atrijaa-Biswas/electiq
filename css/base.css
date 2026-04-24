@@ -537,16 +537,81 @@ a:hover { color: var(--saffron-dark); text-decoration: underline; }
   .container { padding: 0 var(--space-md); }
 }
 
-/* --- Google Translate Widget Overrides --- */
-#google_translate_element .goog-te-gadget-simple {
-  border: 1px solid var(--sepia) !important;
-  border-radius: var(--radius-sm) !important;
-  padding: 4px 8px !important;
-  background: var(--khadi) !important;
-  font-family: var(--font-ui) !important;
-  font-size: 0.85rem !important;
-}
+/* ─── Google Translate Widget Overrides ─────────────────────────────────── */
 
-/* Hide the Google Translate branding bar */
+/* Prevent banner from pushing page content down */
 .goog-te-banner-frame { display: none !important; }
 body { top: 0 !important; }
+
+/* Hide feedback thumbs, tooltip, floating balloon */
+.goog-te-balloon-frame { display: none !important; }
+#goog-gt-tt              { display: none !important; }
+.goog-tooltip            { display: none !important; }
+.goog-tooltip:hover      { display: none !important; }
+
+/* Hide Google branding icon inside widget */
+.goog-te-gadget-icon { display: none !important; }
+
+/* Style the compact gadget */
+.goog-te-gadget-simple {
+  background-color: var(--khadi) !important;
+  border: 1.5px solid var(--sepia) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 4px 8px !important;
+  font-family: var(--font-ui) !important;
+  font-size: 13px !important;
+  color: var(--navy) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+/* Language name text */
+.goog-te-menu-value span {
+  color: var(--navy) !important;
+  font-family: var(--font-ui) !important;
+}
+
+/* Arrow chevron — saffron accent */
+.goog-te-gadget-simple .goog-te-menu-value span:last-child {
+  color: var(--saffron) !important;
+  border: none !important;
+}
+
+/* ─── Translate Container (label + widget) ──────────────────────────────── */
+.translate-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.translate-label {
+  font-family: var(--font-stamp);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--sepia);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Prevent translate widget from bleeding into footer */
+.site-footer { overflow: hidden; }
+
+/* ─── Mobile Translate Bar (above header, < 768px) ──────────────────────── */
+.translate-bar-mobile {
+  display: none;
+  width: 100%;
+  background: var(--parchment);
+  border-bottom: 1px dashed var(--sepia);
+  padding: 8px var(--space-md);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .translate-bar-mobile { display: flex; }
+  .translate-container  { display: none; }
+}
+

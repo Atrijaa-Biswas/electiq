@@ -25,9 +25,9 @@ ElectIQ is a production-ready, dual-mode interactive election education platform
 | Service | How It's Used |
 |---------|--------------|
 | **Google Gemini API** (`gemini-1.5-flash`) | Flowmap per-stage AI chat, dynamic quiz generation (4 MCQs per module), score encouragement messages, personalised voter checklist |
+| **Firebase Authentication** | Google Sign-In (OAuth popup) and Email/Password auth — no anonymous sessions |
 | **Firebase Hosting** | Static site deployment with security headers and CDN |
-| **Firebase Firestore** | Persists user progress (completed modules, quiz scores, explored stages) per anonymous session |
-| **Firebase Anonymous Auth** | No login required — each visitor gets a silent anonymous session for progress tracking |
+| **Firebase Firestore** | Persists user progress (completed modules, quiz scores, explored stages) per authenticated UID |
 | **Google Fonts** | Playfair Display, Crimson Pro, Hind, IM Fell English — all loaded with `font-display: swap` |
 | **Google Translate Widget** | All 22 scheduled Indian languages accessible from the header |
 | **Google Analytics 4** | Page views, user sessions, quiz interactions tracked |
@@ -38,14 +38,16 @@ ElectIQ is a production-ready, dual-mode interactive election education platform
 
 ```
 ElectIQ/
-├── index.html          ← Landing page: hero, Why ElectIQ section
-├── flowmap.html        ← Interactive election lifecycle flowchart
-├── learn.html          ← 7-module lesson journey
-├── quiz.html           ← Gemini-generated MCQ quiz (per module)
-├── checklist.html      ← Personalised Voter Readiness Certificate
+├── index.html          ← Landing page (public) — smart CTA swap for signed-in users
+├── login.html          ← Auth gate — Google Sign-In + Email/Password
+├── flowmap.html        ← Interactive election lifecycle flowchart (protected)
+├── learn.html          ← 7-module lesson journey (protected)
+├── quiz.html           ← Gemini-generated MCQ quiz (protected)
+├── checklist.html      ← Personalised Voter Readiness Certificate (protected)
 ├── css/
 │   ├── base.css        ← Design system: all CSS variables, resets, shared components
 │   ├── landing.css     ← Landing page specific styles
+│   ├── auth.css        ← Login card, Google button, form fields, avatar dropdown
 │   ├── flowmap.css     ← Flowchart, node cards, dossier side panel, Gemini chat
 │   ├── learn.css       ← Lesson card, progress bar with tally marks
 │   ├── quiz.css        ← MCQ answer sheets, correct/wrong stamps, score card
@@ -53,8 +55,10 @@ ElectIQ/
 ├── js/
 │   ├── config.js       ← GITIGNORED: Firebase + Gemini credentials (copy from config.example.js)
 │   ├── config.example.js ← Safe template — commit this, not config.js
+│   ├── auth.js         ← Firebase Auth: Google sign-in, email/password, sign-out, auth guard
+│   ├── header.js       ← Auth guard runner + user avatar dropdown for protected pages
 │   ├── gemini.js       ← Gemini REST API wrapper: sanitization, debounce, caching, JSON parsing
-│   ├── firebase.js     ← Firestore progress tracker + Anonymous Auth with graceful degradation
+│   ├── firebase.js     ← Firestore progress tracker using authenticated UID
 │   ├── flowmap.js      ← Stage data, node rendering, dossier logic, Gemini chat
 │   ├── learn.js        ← 7 lesson modules, progress bar, Firebase save/restore
 │   ├── quiz.js         ← Quiz generation, MCQ rendering, answer feedback, score summary
@@ -171,13 +175,62 @@ ElectIQ/
 
 ---
 
+## Authentication
+
+### Why Proper Auth (not anonymous sessions)
+
+ElectIQ uses Firebase Authentication with real user accounts rather than anonymous sessions. This means:
+- Progress is tied to a real identity and persists across browsers and devices
+- Firestore security rules can enforce strict per-user data isolation
+- Users can sign in with their Google account (one tap) or email/password
+- All quiz scores, explored stages, and lesson progress belong to the user's UID, not a transient session token
+
+### Enabling Sign-in Providers in Firebase Console
+
+1. Go to **Firebase Console → Authentication → Sign-in method**
+2. Enable **Google** — set a project support email
+3. Enable **Email/Password**
+4. Do NOT enable Anonymous, Phone, or any other provider
+
+### How Route Protection Works
+
+Each protected page (`flowmap.html`, `learn.html`, `quiz.html`, `checklist.html`) starts with `body { opacity: 0 }`. The page JS calls `HeaderController.init()` before any rendering. This internally calls `onAuthStateChanged` from Firebase Auth:
+- If the user is signed in → body is revealed, user avatar is rendered in the header
+- If not signed in → browser immediately redirects to `login.html` before the user can see any content
+
+This prevents any flash of protected content before redirect.
+
+### Firestore Security Rules
+
+Paste these exact rules in **Firebase Console → Firestore → Rules**:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+This means:
+- Unauthenticated requests are denied entirely
+- Each signed-in user can only read and write documents under their own UID path
+- No user can access another user's progress data
+
+---
+
 ## Security Notes
 
 - `js/config.js` is listed in `.gitignore` — never commit it
 - All user input is sanitized (HTML stripped, 500-char limit) before reaching Gemini
-- Content Security Policy meta tags are on every HTML page
-- Firestore rules restrict each user to their own document only
-- No sensitive data in `localStorage` — only anonymous session IDs
+- Display names are sanitized (HTML stripped, max 50 chars) before being stored in Firebase Auth profile
+- Content Security Policy meta tags on every HTML page restrict scripts to trusted Google domains
+- Firestore rules restrict each user to their own document path
+- Firebase SDK manages ID tokens internally — tokens are never manually stored or exposed
 - All external resources loaded over HTTPS
 
 ---
@@ -186,10 +239,11 @@ ElectIQ/
 
 1. Users have modern browsers (ES6+ module support)
 2. Gemini API key has sufficient quota for quiz/chat usage
-3. Firebase project has Firestore, Anonymous Auth, and Hosting enabled
+3. Firebase project has Firestore, Google Sign-In, Email/Password Auth, and Hosting enabled
 4. The platform is designed for educational use — content accuracy is based on ECI public documentation as of 2024
 5. The Google Translate widget is sufficient for multilingual support (no custom translation API calls)
 6. `window.print()` PDF generation is acceptable — no server-side PDF library required
+7. Google Sign-In popup works in the deployment environment (popups must not be blocked)
 
 ---
 

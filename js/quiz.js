@@ -269,6 +269,9 @@ const showScoreSummary = async () => {
 // ─── Init ─────────────────────────────────────────────────────────────────
 
 const init = async () => {
+  // ── Auth guard: redirect to login if not authenticated ──────────────────
+  await window.HeaderController.init();
+
   // Read module index from URL parameter
   const params = new URLSearchParams(window.location.search);
   _moduleIndex = Math.max(0, Math.min(parseInt(params.get('module') || '0', 10), MODULE_TOPICS.length - 1));
@@ -280,7 +283,7 @@ const init = async () => {
   const pageTitle = qs('#quiz-page-title');
   if (pageTitle) pageTitle.textContent = `Quiz — ${MODULE_NAMES[_moduleIndex]}`;
 
-  // Initialize Firebase
+  // Initialize Firestore
   try {
     await window.FirebaseService?.init();
   } catch (_) { /* graceful */ }
