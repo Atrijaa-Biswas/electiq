@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ElectIQ Flow Map — Explore the complete Indian election lifecycle as an interactive visual flowchart. Click any stage for an AI-powered deep dive.">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com;">
+  <title>Flow Map — ElectIQ</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/flowmap.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=REPLACE_GA4_ID"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="logo-stamp" aria-label="ElectIQ Home">
+        <div class="logo-circle" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+            <circle cx="12" cy="12" r="3" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+            <line x1="12" y1="2" x2="12" y2="9" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="12" y1="15" x2="12" y2="22" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="2" y1="12" x2="9" y2="12" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="15" y1="12" x2="22" y2="12" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="4.93" y1="4.93" x2="9.76" y2="9.76" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="14.24" y1="14.24" x2="19.07" y2="19.07" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="19.07" y1="4.93" x2="14.24" y2="9.76" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="9.76" y1="14.24" x2="4.93" y2="19.07" stroke="#7B5E3A" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="logo-text">Elect<span>IQ</span></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="site-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="flowmap.html" class="active">Flow Map</a></li>
+          <li><a href="learn.html">Learn</a></li>
+          <li><a href="quiz.html">Quiz</a></li>
+          <li><a href="checklist.html">Checklist</a></li>
+        </ul>
+      </nav>
+      <div class="header-right">
+        <div id="google_translate_element" aria-label="Language selector"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="flowmap-page">
+      <div class="flowmap-header">
+        <h1>The Election Flow Map</h1>
+        <p>Click any stage to open the dossier and chat with Gemini AI about it.</p>
+      </div>
+
+      <!-- Flowchart — nodes rendered by JS -->
+      <div class="flowchart">
+        <div id="flowchart-container" role="list" aria-label="Indian Election Lifecycle stages"></div>
+      </div>
+    </div>
+
+    <!-- ═══ SIDE PANEL (Dossier) ═══ -->
+    <aside
+      id="side-panel"
+      class="side-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="panel-tab-title"
+      aria-hidden="true"
+    >
+      <!-- Dossier tab -->
+      <div class="panel-tab">
+        <span class="panel-tab-title" id="panel-tab-title">Stage Details</span>
+        <button class="panel-close" id="panel-close" aria-label="Close panel" type="button">✕</button>
+      </div>
+
+      <div class="panel-body">
+        <!-- Stamp header -->
+        <div class="panel-stamp-header">
+          <div class="panel-stage-num" id="panel-stage-num">01</div>
+          <div class="panel-stage-name" id="panel-stage-name">Stage Name</div>
+          <div class="panel-timeline" id="panel-timeline">Timeline</div>
+        </div>
+
+        <!-- Rich content (paragraphs injected by JS) -->
+        <div class="panel-content" id="panel-content" aria-live="polite"></div>
+
+        <!-- Key fact box -->
+        <div class="key-fact" id="panel-key-fact"></div>
+
+        <!-- Ask Gemini rubber-stamp button -->
+        <button class="btn-ask-gemini" id="btn-ask-gemini" type="button" aria-expanded="false" aria-controls="chat-section">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2L9.1 9.1 2 12l7.1 2.9L12 22l2.9-7.1L22 12l-7.1-2.9z" fill="white"/>
+          </svg>
+          Ask Gemini →
+        </button>
+
+        <!-- ═══ Gemini Inline Chat ═══ -->
+        <section class="chat-section" id="chat-section" aria-label="Ask Gemini about this stage">
+          <div class="chat-history" id="chat-history" role="log" aria-live="polite" aria-label="Chat conversation"></div>
+          <div class="chat-input-row">
+            <label for="chat-input" class="sr-only">Ask a question about this election stage</label>
+            <input
+              type="text"
+              class="chat-input"
+              id="chat-input"
+              placeholder="Ask anything about this stage…"
+              maxlength="500"
+              autocomplete="off"
+            >
+            <button class="chat-submit" id="chat-submit" type="button" aria-label="Send question">
+              Send
+            </button>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <!-- Overlay backdrop -->
+    <div class="panel-overlay" id="panel-overlay" aria-hidden="true"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-tagline">ElectIQ — India's Interactive Election Education Platform</p>
+      <div class="footer-gemini-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L9.1 9.1 2 12l7.1 2.9L12 22l2.9-7.1L22 12l-7.1-2.9z" fill="#4285F4"/></svg>
+        Powered by Google Gemini
+      </div>
+      <p class="footer-copy">© 2024 ElectIQ. MIT License.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts — Firebase SDK loaded here since this page uses it -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    window.firebaseApp = { initializeApp };
+    window.firebaseFirestore = { getFirestore, doc, setDoc, getDoc, serverTimestamp };
+    window.firebaseAuth = { getAuth, signInAnonymously };
+  </script>
+  <script src="js/config.js"></script>
+  <script src="js/gemini.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/translate.js"></script>
+  <script src="js/flowmap.js"></script>
+  <script async src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script>
+    (function(){const c=window.ELECTIQ_CONFIG;if(c&&c.ga4MeasurementId&&c.ga4MeasurementId!=='YOUR_GA4_MEASUREMENT_ID')gtag('config',c.ga4MeasurementId);})();
+  </script>
+</body>
+</html>

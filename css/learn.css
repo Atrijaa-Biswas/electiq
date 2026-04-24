@@ -1,0 +1,234 @@
+/* learn.css — Lesson module page styles */
+
+/* --- Layout --- */
+.learn-page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-xl) var(--space-2xl);
+}
+
+/* --- Welcome Back Banner --- */
+.welcome-back {
+  background: rgba(45,106,79,0.08);
+  border: 1px dashed var(--india-green);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+  font-family: var(--font-stamp);
+  font-style: italic;
+  color: var(--india-green);
+  font-size: 1rem;
+  display: none; /* shown by JS when returning user detected */
+}
+.welcome-back.visible { display: block; animation: stampIn 300ms ease-out; }
+
+/* --- Progress Bar --- */
+.progress-track {
+  margin-bottom: var(--space-xl);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.progress-label-text {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sepia);
+}
+
+.progress-label-module {
+  font-family: var(--font-stamp);
+  font-size: 0.9rem;
+  color: var(--india-green);
+}
+
+.progress-bar-outer {
+  height: 12px;
+  background: rgba(123,94,58,0.15);
+  border-radius: 20px;
+  border: 1px solid rgba(123,94,58,0.2);
+  position: relative;
+  overflow: visible;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--india-green), var(--india-green-light));
+  border-radius: 20px;
+  transition: width 400ms ease;
+  position: relative;
+}
+
+/* Tally milestone marks on progress bar */
+.progress-milestones {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+  margin-top: var(--space-xs);
+}
+
+.milestone-mark {
+  width: 2px;
+  height: 6px;
+  background: var(--sepia-light);
+  border-radius: 1px;
+  position: relative;
+}
+
+.milestone-mark.done { background: var(--india-green); }
+
+.milestone-mark span {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-stamp);
+  font-size: 0.65rem;
+  color: var(--ash);
+  white-space: nowrap;
+}
+
+.milestone-mark.done span { color: var(--india-green); }
+
+/* --- Lesson Card --- */
+.lesson-card {
+  background: var(--khadi);
+  border: 1px solid var(--sepia);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl) var(--space-2xl);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  /* Ruled-line texture */
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px,
+    rgba(123, 94, 58, 0.06) 32px
+  );
+}
+
+/* Ashoka chakra watermark on lesson card */
+.lesson-card::before {
+  content: '';
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: 200px;
+  height: 200px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Ccircle cx='100' cy='100' r='90' stroke='%237B5E3A' stroke-width='3'/%3E%3Ccircle cx='100' cy='100' r='20' stroke='%237B5E3A' stroke-width='3'/%3E%3Cg stroke='%237B5E3A' stroke-width='2'%3E%3Cline x1='100' y1='10' x2='100' y2='80'/%3E%3Cline x1='100' y1='120' x2='100' y2='190'/%3E%3Cline x1='10' y1='100' x2='80' y2='100'/%3E%3Cline x1='120' y1='100' x2='190' y2='100'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+  background-size: contain;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.lesson-module-num {
+  font-family: var(--font-stamp);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: var(--space-xs);
+}
+
+.lesson-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px dashed var(--sepia-light);
+  padding-bottom: var(--space-md);
+}
+
+.lesson-body p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: var(--space-md);
+}
+
+.lesson-body p:last-child { margin-bottom: 0; }
+
+/* Key Fact — gazette notification style */
+.lesson-key-fact {
+  border-left: 4px solid var(--saffron);
+  background: rgba(224,123,57,0.06);
+  padding: var(--space-md) var(--space-lg);
+  margin: var(--space-xl) 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.lesson-key-fact .key-fact-label {
+  font-family: var(--font-stamp);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: var(--space-xs);
+}
+.lesson-key-fact p {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* --- Lesson Navigation Buttons --- */
+.lesson-nav {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.lesson-nav-right {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.btn-prev {
+  background: transparent;
+  border: 1px solid var(--sepia);
+  color: var(--sepia);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  padding: 10px var(--space-lg);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-height: 44px;
+  transition: all var(--transition-fast);
+}
+.btn-prev:hover {
+  background: var(--sepia);
+  color: var(--white);
+}
+.btn-prev:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* --- Loading state --- */
+.learn-loading {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--sepia);
+  font-family: var(--font-body);
+  font-style: italic;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .learn-page { padding: var(--space-lg) var(--space-md) var(--space-2xl); }
+  .lesson-card { padding: var(--space-lg); }
+  .lesson-nav { flex-direction: column; align-items: stretch; }
+  .lesson-nav-right { flex-direction: column; }
+}

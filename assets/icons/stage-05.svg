@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#7B5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Voting Day icon">
+  <!-- EVM machine body -->
+  <rect x="18" y="20" width="28" height="30" rx="3"/>
+  <!-- EVM screen -->
+  <rect x="22" y="24" width="20" height="10" rx="2" fill="rgba(45,106,79,0.2)" stroke="#2D6A4F"/>
+  <!-- Buttons on EVM -->
+  <circle cx="26" cy="40" r="2.5" fill="rgba(224,123,57,0.4)" stroke="#E07B39"/>
+  <circle cx="32" cy="40" r="2.5"/>
+  <circle cx="38" cy="40" r="2.5"/>
+  <!-- Ballot slot -->
+  <path d="M26 48h12"/>
+  <!-- Finger/hand pressing -->
+  <path d="M32 8v10M28 12l4-4 4 4" stroke="#E07B39" stroke-width="2.5"/>
+  <!-- Ink drop (indelible ink) -->
+  <circle cx="54" cy="14" r="5" fill="rgba(26,26,46,0.2)" stroke="#1A1A2E"/>
+  <path d="M54 9v3M54 17v2" stroke="#1A1A2E" stroke-width="1.5"/>
+</svg>

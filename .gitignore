@@ -1,0 +1,9 @@
+js/config.js
+node_modules/
+.firebase/
+.firebaserc
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

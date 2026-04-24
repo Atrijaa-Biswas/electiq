@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ElectIQ — An interactive election education platform for Indian voters. Learn the full Indian election lifecycle, explore AI-powered insights, and become a confident first-time voter.">
+  <meta name="theme-color" content="#F5ECD7">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com;">
+  <title>ElectIQ — India's Interactive Election Education Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <!-- Google Fonts loaded in base.css via @import with font-display:swap -->
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=REPLACE_GA4_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // GA4 measurement ID will be set after config.js loads
+  </script>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="logo-stamp" aria-label="ElectIQ Home">
+        <div class="logo-circle" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <!-- Mini Ashoka Chakra spokes -->
+            <circle cx="12" cy="12" r="10" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+            <circle cx="12" cy="12" r="3" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+            <line x1="12" y1="2" x2="12" y2="9" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="12" y1="15" x2="12" y2="22" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="2" y1="12" x2="9" y2="12" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="15" y1="12" x2="22" y2="12" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="4.93" y1="4.93" x2="9.76" y2="9.76" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="14.24" y1="14.24" x2="19.07" y2="19.07" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="19.07" y1="4.93" x2="14.24" y2="9.76" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="9.76" y1="14.24" x2="4.93" y2="19.07" stroke="#7B5E3A" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="logo-text">Elect<span>IQ</span></span>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="site-nav">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="flowmap.html">Flow Map</a></li>
+          <li><a href="learn.html">Learn</a></li>
+          <li><a href="quiz.html">Quiz</a></li>
+          <li><a href="checklist.html">Checklist</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <div id="google_translate_element" aria-label="Language selector"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <main id="main-content">
+    <section class="hero page-entry" aria-labelledby="hero-heading">
+
+      <!-- Ashoka Chakra watermark (decorative) -->
+      <svg class="hero-chakra" viewBox="0 0 200 200" fill="none" aria-hidden="true" focusable="false">
+        <circle cx="100" cy="100" r="95" stroke="#7B5E3A" stroke-width="3" fill="none"/>
+        <circle cx="100" cy="100" r="20" stroke="#7B5E3A" stroke-width="3" fill="none"/>
+        <!-- 24 spokes -->
+        <g stroke="#7B5E3A" stroke-width="2">
+          <line x1="100" y1="5" x2="100" y2="80"/>
+          <line x1="100" y1="120" x2="100" y2="195"/>
+          <line x1="5" y1="100" x2="80" y2="100"/>
+          <line x1="120" y1="100" x2="195" y2="100"/>
+          <line x1="26" y1="26" x2="86" y2="86"/>
+          <line x1="114" y1="114" x2="174" y2="174"/>
+          <line x1="174" y1="26" x2="114" y2="86"/>
+          <line x1="86" y1="114" x2="26" y2="174"/>
+          <line x1="62" y1="8" x2="82" y2="82"/>
+          <line x1="118" y1="118" x2="138" y2="192"/>
+          <line x1="138" y1="8" x2="118" y2="82"/>
+          <line x1="82" y1="118" x2="62" y2="192"/>
+          <line x1="8" y1="62" x2="82" y2="82"/>
+          <line x1="118" y1="118" x2="192" y2="138"/>
+          <line x1="8" y1="138" x2="82" y2="118"/>
+          <line x1="118" y1="82" x2="192" y2="62"/>
+        </g>
+      </svg>
+
+      <div class="hero-content">
+        <!-- Stamp Logo -->
+        <div class="hero-logo">
+          <div class="hero-logo-circle" aria-hidden="true">
+            <span style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; color: var(--navy);">EQ</span>
+          </div>
+          <div class="hero-logo-text">Elect<em>IQ</em></div>
+          <div class="hero-logo-subtitle">Official Election Education Platform</div>
+        </div>
+
+        <h1 class="hero-headline" id="hero-heading">
+          The world's largest democracy<br>begins with you.
+        </h1>
+        <p class="hero-subheading">
+          Understand the election process, one step at a time.
+        </p>
+
+        <!-- Ballot-style CTA Buttons -->
+        <div class="cta-group">
+          <a href="flowmap.html" class="btn btn-ballot" id="cta-flowmap" aria-label="Explore the Election Flow Map">
+            Explore the Flow Map
+          </a>
+          <a href="learn.html" class="btn btn-ballot" id="cta-learn" aria-label="Begin structured learning modules">
+            Begin Learning
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tricolor Divider -->
+    <div class="tricolor-divider" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+
+    <!-- ═══ WHY ELECTIQ ═══ -->
+    <section class="why-section" aria-labelledby="why-heading">
+      <div class="container">
+        <h2 class="section-title" id="why-heading">Why ElectIQ?</h2>
+        <p class="section-subtitle">Your democratic journey, explained with clarity and care.</p>
+
+        <div class="why-cards">
+          <article class="why-card">
+            <div class="why-card-icon" aria-hidden="true">🗺️</div>
+            <h3>Visual Flow Map</h3>
+            <p>Explore the complete Indian election lifecycle as an interactive visual journey — from voter registration to government formation — with every stage explained by AI.</p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card-icon" aria-hidden="true">📚</div>
+            <h3>Structured Learning</h3>
+            <p>Work through 7 carefully crafted lesson modules at your own pace. Your progress is saved automatically so you can pick up right where you left off.</p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card-icon" aria-hidden="true">🤖</div>
+            <h3>AI-Powered Quizzes</h3>
+            <p>Test your knowledge with dynamic Gemini-generated quizzes after each module, receive instant personalised feedback, and earn your Voter Readiness Certificate.</p>
+          </article>
+        </div>
+
+        <div class="stamp-divider" aria-hidden="true">
+          <span>✦</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <!-- Ashoka Chakra SVG in footer -->
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-label="Ashoka Chakra decorative icon">
+        <circle cx="18" cy="18" r="16" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+        <circle cx="18" cy="18" r="5" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+        <g stroke="#7B5E3A" stroke-width="1">
+          <line x1="18" y1="2" x2="18" y2="13"/>
+          <line x1="18" y1="23" x2="18" y2="34"/>
+          <line x1="2" y1="18" x2="13" y2="18"/>
+          <line x1="23" y1="18" x2="34" y2="18"/>
+          <line x1="5.5" y1="5.5" x2="13.5" y2="13.5"/>
+          <line x1="22.5" y1="22.5" x2="30.5" y2="30.5"/>
+          <line x1="30.5" y1="5.5" x2="22.5" y2="13.5"/>
+          <line x1="13.5" y1="22.5" x2="5.5" y2="30.5"/>
+        </g>
+      </svg>
+
+      <p class="footer-tagline">Empowering every Indian voter with knowledge.</p>
+
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="flowmap.html">Flow Map</a></li>
+        <li><a href="learn.html">Learn</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="checklist.html">My Checklist</a></li>
+      </ul>
+
+      <div class="footer-gemini-badge" aria-label="Powered by Google Gemini AI">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L9.1 9.1 2 12l7.1 2.9L12 22l2.9-7.1L22 12l-7.1-2.9z" fill="#4285F4"/>
+        </svg>
+        Powered by Google Gemini
+      </div>
+
+      <p class="footer-copy">© 2024 ElectIQ. Built for PromptWars: Virtual — Challenge 2. MIT License.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/translate.js"></script>
+  <!-- Google Translate -->
+  <script async src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <!-- GA4 init after config loads -->
+  <script>
+    (function() {
+      const cfg = window.ELECTIQ_CONFIG;
+      if (cfg && cfg.ga4MeasurementId && cfg.ga4MeasurementId !== 'YOUR_GA4_MEASUREMENT_ID') {
+        gtag('config', cfg.ga4MeasurementId);
+      }
+    })();
+  </script>
+</body>
+</html>

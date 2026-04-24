@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ElectIQ Learn — Structured lesson modules through the 7 stages of the Indian election process. Progress saved automatically.">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https:; script-src 'self' https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://www.gstatic.com https://www.googleapis.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com;">
+  <title>Learn — ElectIQ</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/learn.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=REPLACE_GA4_ID"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="logo-stamp" aria-label="ElectIQ Home">
+        <div class="logo-circle" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+            <circle cx="12" cy="12" r="3" stroke="#7B5E3A" stroke-width="1.5" fill="none"/>
+            <line x1="12" y1="2" x2="12" y2="9" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="12" y1="15" x2="12" y2="22" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="2" y1="12" x2="9" y2="12" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="15" y1="12" x2="22" y2="12" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="4.93" y1="4.93" x2="9.76" y2="9.76" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="14.24" y1="14.24" x2="19.07" y2="19.07" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="19.07" y1="4.93" x2="14.24" y2="9.76" stroke="#7B5E3A" stroke-width="1"/>
+            <line x1="9.76" y1="14.24" x2="4.93" y2="19.07" stroke="#7B5E3A" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="logo-text">Elect<span>IQ</span></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="site-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="flowmap.html">Flow Map</a></li>
+          <li><a href="learn.html" class="active">Learn</a></li>
+          <li><a href="quiz.html">Quiz</a></li>
+          <li><a href="checklist.html">Checklist</a></li>
+        </ul>
+      </nav>
+      <div class="header-right">
+        <div id="google_translate_element" aria-label="Language selector"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="learn-page page-entry">
+
+      <!-- Welcome back (hidden by default, shown by JS for returning users) -->
+      <div class="welcome-back" id="welcome-back" role="status" aria-live="polite"></div>
+
+      <!-- Progress Bar -->
+      <div class="progress-track" aria-label="Course progress">
+        <div class="progress-label">
+          <span class="progress-label-text">Your Progress</span>
+          <span class="progress-label-module" id="progress-module-label" aria-live="polite">Module 1 of 7</span>
+        </div>
+        <div class="progress-bar-outer" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0" id="progress-bar" aria-label="Lesson progress">
+          <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <!-- Tally milestone marks -->
+        <div class="progress-milestones" aria-hidden="true">
+          <div class="milestone-mark" id="milestone-1"><span>1</span></div>
+          <div class="milestone-mark" id="milestone-2"><span>2</span></div>
+          <div class="milestone-mark" id="milestone-3"><span>3</span></div>
+          <div class="milestone-mark" id="milestone-4"><span>4</span></div>
+          <div class="milestone-mark" id="milestone-5"><span>5</span></div>
+          <div class="milestone-mark" id="milestone-6"><span>6</span></div>
+          <div class="milestone-mark" id="milestone-7"><span>7</span></div>
+        </div>
+      </div>
+
+      <!-- Lesson Card -->
+      <article class="lesson-card" id="lesson-card" aria-labelledby="lesson-title">
+        <div class="lesson-module-num" id="lesson-module-num">Module 01</div>
+        <h1 class="lesson-title" id="lesson-title">Loading…</h1>
+
+        <div class="lesson-body" id="lesson-body" aria-live="polite">
+          <div class="spinner" aria-label="Loading lesson content"></div>
+        </div>
+
+        <div class="lesson-key-fact key-fact" id="lesson-key-fact"></div>
+
+        <!-- Navigation -->
+        <nav class="lesson-nav" aria-label="Lesson navigation">
+          <button class="btn-prev" id="btn-prev" type="button" disabled aria-label="Previous module">
+            ← Previous
+          </button>
+          <div class="lesson-nav-right">
+            <a href="quiz.html?module=0" class="btn btn-outline" id="btn-test" aria-label="Take quiz on this module">
+              Test Me on This
+            </a>
+            <button class="btn btn-primary" id="btn-next" type="button" aria-label="Go to next module">
+              Next Module →
+            </button>
+          </div>
+        </nav>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-tagline">ElectIQ — India's Interactive Election Education Platform</p>
+      <ul class="footer-links">
+        <li><a href="flowmap.html">Flow Map</a></li>
+        <li><a href="checklist.html">My Checklist</a></li>
+      </ul>
+      <div class="footer-gemini-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L9.1 9.1 2 12l7.1 2.9L12 22l2.9-7.1L22 12l-7.1-2.9z" fill="#4285F4"/></svg>
+        Powered by Google Gemini
+      </div>
+      <p class="footer-copy">© 2024 ElectIQ. MIT License.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    window.firebaseApp = { initializeApp };
+    window.firebaseFirestore = { getFirestore, doc, setDoc, getDoc, serverTimestamp };
+    window.firebaseAuth = { getAuth, signInAnonymously };
+  </script>
+  <script src="js/config.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/translate.js"></script>
+  <script src="js/learn.js"></script>
+  <script async src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script>(function(){const c=window.ELECTIQ_CONFIG;if(c&&c.ga4MeasurementId&&c.ga4MeasurementId!=='YOUR_GA4_MEASUREMENT_ID')gtag('config',c.ga4MeasurementId);})();</script>
+</body>
+</html>

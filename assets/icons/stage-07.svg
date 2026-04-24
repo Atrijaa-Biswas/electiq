@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#7B5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Government Formation icon">
+  <!-- Building / parliament -->
+  <rect x="10" y="34" width="44" height="22" rx="2"/>
+  <!-- Columns -->
+  <rect x="16" y="34" width="4" height="22"/><rect x="24" y="34" width="4" height="22"/>
+  <rect x="36" y="34" width="4" height="22"/><rect x="44" y="34" width="4" height="22"/>
+  <!-- Dome -->
+  <path d="M16 34 Q32 10 48 34"/>
+  <!-- Flag on top -->
+  <line x1="32" y1="10" x2="32" y2="18"/>
+  <path d="M32 10l10 4-10 4z" fill="rgba(224,123,57,0.6)" stroke="#E07B39" stroke-width="1"/>
+  <!-- Steps -->
+  <line x1="6" y1="56" x2="58" y2="56"/>
+  <line x1="8" y1="52" x2="56" y2="52"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#7B5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Election Campaigning icon">
+  <!-- Flag on pole -->
+  <line x1="20" y1="8" x2="20" y2="56"/>
+  <path d="M20 10l24 8-24 8z" fill="rgba(224,123,57,0.3)" stroke="#E07B39"/>
+  <!-- Crowd dots -->
+  <circle cx="10" cy="50" r="4"/>
+  <circle cx="22" cy="52" r="4"/>
+  <circle cx="34" cy="50" r="4"/>
+  <circle cx="46" cy="52" r="4"/>
+  <circle cx="56" cy="50" r="4"/>
+  <!-- Star accent -->
+  <path d="M44 20l1.5 4.5H50l-3.8 2.8 1.5 4.5L44 29l-3.7 2.8 1.5-4.5L38 24.5h4.5z" fill="#E07B39" stroke="#E07B39" stroke-width="1"/>
+</svg>

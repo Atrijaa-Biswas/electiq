@@ -1,0 +1,264 @@
+/* quiz.css — Quiz page styles */
+
+.quiz-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-xl) var(--space-2xl);
+}
+
+.quiz-header {
+  margin-bottom: var(--space-xl);
+}
+
+.quiz-header h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--space-xs);
+}
+
+.quiz-module-label {
+  font-family: var(--font-stamp);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--saffron);
+}
+
+/* --- Question Card --- */
+.question-card {
+  background: var(--khadi);
+  border: 1px solid var(--sepia);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-xl);
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px,
+    rgba(123, 94, 58, 0.06) 32px
+  );
+}
+
+.question-number {
+  font-family: var(--font-stamp);
+  font-size: 1.8rem;
+  color: var(--sepia-light);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.question-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.5;
+  margin-bottom: var(--space-lg);
+}
+
+/* --- Answer Options --- */
+.options-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.option-item {
+  position: relative;
+}
+
+.option-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--khadi);
+  border: 2px solid var(--sepia);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--navy);
+  min-height: 52px;
+  transition: background var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--saffron);
+  background: rgba(224,123,57,0.04);
+}
+
+.option-label {
+  font-family: var(--font-stamp);
+  font-size: 1.1rem;
+  color: var(--sepia);
+  width: 24px;
+  flex-shrink: 0;
+  transition: color var(--transition-normal);
+}
+
+.option-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* Selected state — saffron ink-bleed */
+.option-btn.selected {
+  background: rgba(224,123,57,0.12);
+  border-color: var(--saffron);
+}
+.option-btn.selected .option-label { color: var(--saffron); }
+
+/* Correct/wrong after submission */
+.option-btn.correct {
+  background: rgba(45,106,79,0.12);
+  border-color: var(--india-green);
+}
+.option-btn.correct .option-label { color: var(--india-green); }
+
+.option-btn.wrong {
+  background: rgba(192,57,43,0.08);
+  border-color: var(--ballot-red);
+}
+.option-btn.wrong .option-label { color: var(--ballot-red); }
+
+.option-btn:disabled { cursor: default; }
+
+/* --- Submit Button --- */
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 12px var(--space-xl);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background var(--transition-fast);
+}
+.btn-submit:hover:not(:disabled) { background: #2a2a42; }
+.btn-submit:disabled { background: var(--ash); cursor: not-allowed; }
+
+/* --- Feedback --- */
+.feedback {
+  margin-top: var(--space-md);
+  display: none;
+}
+.feedback.visible { display: block; }
+
+/* Correct stamp */
+.feedback-correct {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--india-green);
+  font-family: var(--font-stamp);
+  font-size: 1.2rem;
+  animation: stampIn 200ms ease-out;
+}
+
+.feedback-correct svg { animation: stampIn 200ms ease-out; }
+
+/* Wrong feedback */
+.feedback-wrong {
+  background: var(--ballot-red-light);
+  border: 2px solid var(--ballot-red);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  animation: stampIn 200ms ease-out;
+}
+.feedback-wrong .feedback-wrong-title {
+  font-family: var(--font-stamp);
+  color: var(--ballot-red);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-xs);
+}
+.feedback-wrong p {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  color: #8b1a12;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* --- Score Summary Card --- */
+.score-card {
+  background: var(--khadi);
+  border: 2px dashed var(--sepia);
+  border-radius: var(--radius-md);
+  padding: var(--space-2xl);
+  text-align: center;
+  display: none;
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px,
+    rgba(123, 94, 58, 0.06) 32px
+  );
+}
+.score-card.visible { display: block; animation: pageEntry 400ms ease; }
+
+.score-number {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1;
+  margin: var(--space-md) 0;
+}
+.score-number span { color: var(--india-green); }
+
+.score-label {
+  font-family: var(--font-stamp);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--sepia);
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.score-message {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--navy);
+  line-height: 1.7;
+  margin: var(--space-lg) 0;
+  padding: var(--space-md) var(--space-lg);
+  border-left: 4px solid var(--saffron);
+  background: rgba(224,123,57,0.05);
+  text-align: left;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.score-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-xl);
+}
+
+/* --- Loading state for quiz generation --- */
+.quiz-loading {
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.quiz-loading p {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--sepia);
+  margin-top: var(--space-md);
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .quiz-page { padding: var(--space-lg) var(--space-md) var(--space-2xl); }
+  .question-card { padding: var(--space-lg); }
+  .score-actions { flex-direction: column; align-items: center; }
+}

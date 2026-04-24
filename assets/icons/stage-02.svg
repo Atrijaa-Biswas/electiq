@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#7B5E3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Election Announcement icon">
+  <!-- Megaphone -->
+  <path d="M12 24h8l16-10v36l-16-10H12z"/>
+  <rect x="4" y="24" width="8" height="16" rx="2"/>
+  <!-- Sound waves -->
+  <path d="M42 20c4 3.5 4 20.5 0 24" stroke-width="2.5"/>
+  <path d="M46 16c6 5.5 6 26.5 0 32" stroke-width="1.5" opacity="0.6"/>
+  <!-- MCC stamp -->
+  <circle cx="54" cy="14" r="6" stroke="#E07B39" stroke-width="2" fill="none"/>
+  <text x="54" y="18" text-anchor="middle" font-size="6" fill="#E07B39" font-family="serif" stroke="none">M</text>
+</svg>

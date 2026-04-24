@@ -1,0 +1,552 @@
+/* =============================================================
+   base.css — ElectIQ Design System
+   All CSS custom properties, resets, typography, shared utilities
+   ============================================================= */
+
+/* --- Google Fonts Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Hind:wght@400;500;600&family=IM+Fell+English:ital@0;1&display=swap');
+
+/* --- CSS Custom Properties (Design Tokens) --- */
+:root {
+  /* Colors */
+  --saffron:       #E07B39;
+  --saffron-light: #F0A06A;
+  --saffron-dark:  #C0622A;
+  --india-green:   #2D6A4F;
+  --india-green-light: #52B788;
+  --navy:          #1A1A2E;
+  --parchment:     #F5ECD7;
+  --khadi:         #FAF3E0;
+  --sepia:         #7B5E3A;
+  --sepia-light:   #A08060;
+  --ash:           #9E9E9E;
+  --ballot-red:    #C0392B;
+  --ballot-red-light: #F5C6C2;
+  --white:         #FFFFFF;
+
+  /* Shadows (warm amber instead of grey) */
+  --shadow-sm:  0 2px 8px rgba(123, 94, 58, 0.12);
+  --shadow-md:  0 4px 16px rgba(123, 94, 58, 0.18);
+  --shadow-lg:  0 8px 32px rgba(123, 94, 58, 0.24);
+  --shadow-hover: 0 6px 24px rgba(123, 94, 58, 0.30);
+
+  /* Typography */
+  --font-display:  'Playfair Display', Georgia, serif;
+  --font-body:     'Crimson Pro', Georgia, serif;
+  --font-ui:       'Hind', system-ui, sans-serif;
+  --font-stamp:    'IM Fell English', Georgia, serif;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-2xl: 64px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Transitions */
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   400ms ease;
+
+  /* Z-index layers */
+  --z-base:    1;
+  --z-overlay: 100;
+  --z-panel:   200;
+  --z-modal:   300;
+  --z-toast:   400;
+
+  /* Layout */
+  --max-width: 1200px;
+  --header-h:  68px;
+}
+
+/* --- CSS Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  background-color: var(--parchment);
+  color: var(--navy);
+  line-height: 1.6;
+  min-height: 100vh;
+  /* CSS paper-grain texture via SVG noise filter — no image file */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* --- Accessibility: Focus Ring --- */
+:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove default focus ring, rely on focus-visible */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- Reduced Motion Support --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Typography Scale --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); font-weight: 700; }
+h4 { font-size: 1.1rem; font-weight: 600; }
+
+p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--navy);
+}
+
+a {
+  color: var(--saffron);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+a:hover { color: var(--saffron-dark); text-decoration: underline; }
+
+/* --- Shared Header --- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-overlay);
+  background-color: var(--khadi);
+  border-bottom: 2px solid var(--sepia);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  gap: var(--space-md);
+}
+
+/* --- ElectIQ Stamp Logo --- */
+.logo-stamp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px dashed var(--sepia);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  position: relative;
+}
+
+.logo-circle::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px solid var(--sepia-light);
+  opacity: 0.5;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+
+.logo-text span {
+  color: var(--saffron);
+}
+
+/* --- Navigation --- */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  list-style: none;
+}
+
+.site-nav a {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--navy);
+  text-decoration: none;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: var(--saffron);
+  background: rgba(224, 123, 57, 0.08);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+/* --- Shared Footer --- */
+.site-footer {
+  background-color: var(--navy);
+  color: var(--parchment);
+  padding: var(--space-xl) var(--space-xl) var(--space-lg);
+  margin-top: var(--space-2xl);
+  border-top: 3px solid var(--sepia);
+}
+
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  text-align: center;
+}
+
+.footer-tagline {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--sepia-light);
+  font-size: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-lg);
+  list-style: none;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--ash);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover { color: var(--saffron); }
+
+.footer-gemini-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ash);
+  border: 1px solid rgba(158,158,158,0.3);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 20px;
+}
+
+.footer-copy {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ash);
+}
+
+/* --- Tricolor Divider --- */
+.tricolor-divider {
+  height: 5px;
+  display: flex;
+}
+.tricolor-divider span {
+  flex: 1;
+}
+.tricolor-divider span:nth-child(1) { background: var(--saffron); }
+.tricolor-divider span:nth-child(2) { background: var(--white); }
+.tricolor-divider span:nth-child(3) { background: var(--india-green); }
+
+/* --- Shared Button Styles --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px var(--space-xl);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all var(--transition-normal);
+  min-height: 44px;
+  min-width: 44px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: var(--saffron);
+  color: var(--white);
+  border-color: var(--saffron);
+}
+.btn-primary:hover {
+  background: var(--saffron-dark);
+  border-color: var(--saffron-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  color: var(--white);
+  text-decoration: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--sepia);
+}
+.btn-outline:hover {
+  background: var(--saffron);
+  color: var(--white);
+  border-color: var(--saffron);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.btn-green {
+  background: var(--india-green);
+  color: var(--white);
+  border-color: var(--india-green);
+}
+.btn-green:hover {
+  background: #1e4f3a;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  color: var(--white);
+}
+
+/* --- Ballot-style Button (checkbox aesthetic) --- */
+.btn-ballot {
+  background: var(--khadi);
+  color: var(--navy);
+  border: 2px solid var(--sepia);
+  font-family: var(--font-ui);
+  padding: 14px var(--space-xl);
+  position: relative;
+  text-align: left;
+  gap: var(--space-md);
+}
+.btn-ballot::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--sepia);
+  border-radius: 2px;
+  flex-shrink: 0;
+  background: var(--khadi);
+  transition: background var(--transition-normal), border-color var(--transition-normal);
+}
+.btn-ballot:hover {
+  background: var(--saffron);
+  border-color: var(--saffron);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+.btn-ballot:hover::before {
+  background: var(--saffron-dark);
+  border-color: var(--saffron-dark);
+}
+
+/* --- Shared Card --- */
+.card {
+  background: var(--khadi);
+  border: 1px solid var(--sepia);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  /* Faint ruled-line texture via CSS */
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(123, 94, 58, 0.06) 28px
+  );
+  background-size: 100% 28px;
+}
+
+/* --- Error Card --- */
+.error-card {
+  background: var(--ballot-red-light);
+  border: 2px dashed var(--ballot-red);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  color: var(--ballot-red);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+}
+
+/* --- Loading Spinner --- */
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(224, 123, 57, 0.2);
+  border-top-color: var(--saffron);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: var(--space-lg) auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Page Entry Animation --- */
+.page-entry {
+  animation: pageEntry var(--transition-slow) ease forwards;
+}
+@keyframes pageEntry {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Key Fact Box --- */
+.key-fact {
+  border-left: 4px solid var(--saffron);
+  padding: var(--space-md) var(--space-lg);
+  margin: var(--space-lg) 0;
+  background: rgba(224, 123, 57, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.key-fact-label {
+  font-family: var(--font-stamp);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--saffron);
+  margin-bottom: var(--space-xs);
+}
+.key-fact p {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--navy);
+  margin: 0;
+}
+
+/* --- Ashoka Chakra Watermark SVG --- */
+.chakra-watermark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.05;
+  z-index: 0;
+  user-select: none;
+  aria-hidden: true;
+}
+
+/* --- Stamp Appear Animation --- */
+.stamp-appear {
+  animation: stampIn 200ms ease-out forwards;
+}
+@keyframes stampIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* --- Utility Classes --- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.text-center { text-align: center; }
+.text-sepia { color: var(--sepia); }
+.text-ash { color: var(--ash); }
+.text-saffron { color: var(--saffron); }
+.text-green { color: var(--india-green); }
+
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+/* --- Responsive Header --- */
+@media (max-width: 768px) {
+  .site-header { padding: 0 var(--space-md); }
+  .site-nav { display: none; }
+  .header-inner { gap: var(--space-sm); }
+  .logo-text { font-size: 1.1rem; }
+  .container { padding: 0 var(--space-md); }
+}
+
+/* --- Google Translate Widget Overrides --- */
+#google_translate_element .goog-te-gadget-simple {
+  border: 1px solid var(--sepia) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 4px 8px !important;
+  background: var(--khadi) !important;
+  font-family: var(--font-ui) !important;
+  font-size: 0.85rem !important;
+}
+
+/* Hide the Google Translate branding bar */
+.goog-te-banner-frame { display: none !important; }
+body { top: 0 !important; }

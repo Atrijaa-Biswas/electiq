@@ -1,0 +1,235 @@
+/* landing.css — Landing page specific styles */
+
+/* --- Hero Section --- */
+.hero {
+  min-height: calc(90vh - var(--header-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2xl) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Large Ashoka Chakra watermark in hero */
+.hero-chakra {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+/* Stamp logo in hero — larger than header version */
+.hero-logo {
+  margin-bottom: var(--space-xl);
+}
+
+.hero-logo-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px dashed var(--sepia);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-md);
+  position: relative;
+  background: rgba(245, 236, 215, 0.6);
+}
+
+.hero-logo-circle::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--sepia-light);
+}
+
+.hero-logo-circle::after {
+  content: '★';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--saffron);
+  font-size: 1rem;
+  background: var(--parchment);
+  padding: 0 4px;
+}
+
+.hero-logo-text {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+
+.hero-logo-text em {
+  color: var(--saffron);
+  font-style: normal;
+}
+
+.hero-logo-subtitle {
+  font-family: var(--font-stamp);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sepia);
+  margin-top: var(--space-xs);
+}
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.15;
+  margin-bottom: var(--space-md);
+}
+
+.hero-subheading {
+  font-family: var(--font-ui);
+  font-size: 1.15rem;
+  color: var(--sepia);
+  margin-bottom: var(--space-xl);
+  line-height: 1.5;
+}
+
+/* --- Ballot-style CTA Group --- */
+.cta-group {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-xl);
+}
+
+.cta-group .btn-ballot {
+  min-width: 220px;
+  font-size: 1rem;
+}
+
+/* --- Why ElectIQ Section --- */
+.why-section {
+  padding: var(--space-2xl) var(--space-xl);
+  position: relative;
+}
+
+.why-section .section-title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  margin-bottom: var(--space-sm);
+  color: var(--navy);
+}
+
+.why-section .section-subtitle {
+  text-align: center;
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--sepia);
+  font-size: 1.05rem;
+  margin-bottom: var(--space-xl);
+}
+
+.why-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.why-card {
+  background: var(--khadi);
+  border: 1px solid var(--sepia);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  position: relative;
+  /* Ruled-line texture */
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(123, 94, 58, 0.05) 28px
+  );
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.why-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.why-card-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--space-md);
+  border-radius: 50%;
+  background: rgba(224, 123, 57, 0.1);
+  border: 2px solid rgba(224, 123, 57, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.why-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: var(--space-sm);
+}
+
+.why-card p {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--sepia);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- Stamp divider decorative element --- */
+.stamp-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-xl) auto;
+  max-width: 400px;
+}
+
+.stamp-divider::before,
+.stamp-divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px dashed var(--sepia-light);
+}
+
+.stamp-divider span {
+  font-family: var(--font-stamp);
+  font-size: 1.2rem;
+  color: var(--sepia-light);
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .hero { padding: var(--space-xl) var(--space-md); min-height: auto; }
+  .cta-group { flex-direction: column; align-items: center; }
+  .cta-group .btn-ballot { width: 100%; max-width: 340px; }
+  .why-section { padding: var(--space-xl) var(--space-md); }
+}
