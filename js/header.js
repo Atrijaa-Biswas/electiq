@@ -3,7 +3,7 @@
  *
  * Responsibilities:
  * - Auth guard: redirect to login.html if not signed in
- * - Render user avatar + dropdown in the header
+ * - Render user avatar (.profile-trigger) + dropdown (.profile-dropdown)
  * - Handle dropdown open/close (click outside, ESC)
  * - Sign Out via AuthService
  *
@@ -40,7 +40,7 @@ const HeaderController = (() => {
     });
   };
 
-  // ─── Render User Menu ────────────────────────────────────────────────────
+  // ─── Render User Menu ─────────────────────────────────────────────────────
 
   const _renderUserMenu = (user) => {
     const headerRight = document.querySelector('.header-right');
@@ -51,14 +51,18 @@ const HeaderController = (() => {
     const email    = user.email || '';
     const photoURL = user.photoURL || '';
 
+    // Avatar shown inside the dropdown card
     const avatarHTML = photoURL
-      ? `<div class="user-dropdown-avatar"><img src="${photoURL}" alt="${name}" referrerpolicy="no-referrer"></div>`
-      : `<div class="user-dropdown-avatar-initials">${initials}</div>`;
+      ? `<img class="profile-avatar" src="${photoURL}" alt="${name}" referrerpolicy="no-referrer">`
+      : `<div class="profile-initials">${initials}</div>`;
 
-    // Build avatar button + dropdown
-    const menuEl = document.createElement('div');
-    menuEl.className = 'user-menu';
-    menuEl.innerHTML = `
+    // Wrapper — position:relative on the trigger so dropdown positions under it
+    const wrapEl = document.createElement('div');
+    wrapEl.className = 'profile-trigger';
+    wrapEl.setAttribute('id', 'profile-trigger');
+
+    wrapEl.innerHTML = `
+      <!-- Avatar button (small circle in header) -->
       <button
         class="user-avatar-btn"
         id="user-avatar-btn"
@@ -72,49 +76,60 @@ const HeaderController = (() => {
           : initials
         }
       </button>
-      <div class="user-dropdown" id="user-dropdown" role="menu" aria-label="User options">
+
+      <!-- Dropdown card (hidden by default) -->
+      <div class="profile-dropdown" id="profile-dropdown" role="menu"
+           aria-label="User options" style="display:none;">
         ${avatarHTML}
-        <div class="user-dropdown-name" title="${name}">${name}</div>
-        <div class="user-dropdown-email" title="${email}">${email}</div>
-        <hr class="user-dropdown-divider">
-        <div class="user-dropdown-actions">
-          <button class="btn-signout" id="btn-signout" type="button" role="menuitem">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Sign Out
-          </button>
-        </div>
+        <div class="profile-name">${name}</div>
+        <div class="profile-email">${email}</div>
+        <hr class="profile-divider">
+        <button class="profile-signout-btn" id="btn-signout"
+                type="button" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <polyline points="16,17 21,12 16,7"
+                  stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="21" y1="12" x2="9" y2="12"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Sign Out
+        </button>
       </div>
     `;
 
     // Prepend to header-right (before translate widget)
-    headerRight.insertBefore(menuEl, headerRight.firstChild);
+    headerRight.insertBefore(wrapEl, headerRight.firstChild);
 
-    // ── Dropdown Toggle ────────────────────────────────────────────
+    // ── Dropdown Toggle ──────────────────────────────────────────────────────
+    const trigger  = document.getElementById('profile-trigger');
     const avatarBtn = document.getElementById('user-avatar-btn');
-    const dropdown  = document.getElementById('user-dropdown');
+    const dropdown  = document.getElementById('profile-dropdown');
 
     const openDropdown = () => {
-      dropdown.classList.add('open');
+      dropdown.style.display = 'block';
       avatarBtn.setAttribute('aria-expanded', 'true');
     };
 
     const closeDropdown = () => {
-      dropdown.classList.remove('open');
+      dropdown.style.display = 'none';
       avatarBtn.setAttribute('aria-expanded', 'false');
     };
 
     avatarBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      dropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+      dropdown.style.display === 'none' ? openDropdown() : closeDropdown();
     });
 
     // Close on outside click
     document.addEventListener('click', (e) => {
-      if (!menuEl.contains(e.target)) closeDropdown();
+      const dd = document.querySelector('.profile-dropdown');
+      const tr = document.querySelector('.profile-trigger');
+      if (dd && tr && !tr.contains(e.target) && !dd.contains(e.target)) {
+        dd.remove();
+      }
     });
 
     // Close on ESC

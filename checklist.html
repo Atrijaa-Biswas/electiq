@@ -9,17 +9,14 @@
   <style>body { opacity: 0; transition: opacity 200ms ease; }</style>
   <title>My Voter Checklist — ElectIQ</title>
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
   <link rel="stylesheet" href="css/checklist.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=REPLACE_GA4_ID"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());</script>
 </head>
 <body>
 
-  <!-- Mobile translate bar -->
-  <div class="translate-bar-mobile" aria-label="Language selector">
-    <span class="translate-label" aria-hidden="true">Translate:</span>
-    <div id="google_translate_element_mobile"></div>
-  </div>
+
 
   <header class="site-header" role="banner">
     <div class="header-inner">
@@ -50,7 +47,7 @@
         </ul>
       </nav>
       <div class="header-right">
-        <div class="translate-container" aria-label="Language selector">
+        <div id="translate-container">
           <span class="translate-label" aria-hidden="true">Translate:</span>
           <div id="google_translate_element"></div>
         </div>

@@ -381,192 +381,131 @@
 }
 .btn-resend:hover { color: var(--saffron-dark); }
 
-/* ─── User Avatar / Dropdown (shared header addition) ─── */
 
-.user-menu {
-  position: relative;
-  display: flex;
-  align-items: center;
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: #FAF3E0;
+  border: 1.5px solid #7B5E3A;
+  border-radius: 6px;
+  box-shadow: 4px 4px 16px rgba(123, 94, 58, 0.25);
+  padding: 16px;
+  z-index: 1000;
+  animation: dropdownIn 200ms ease forwards;
 }
 
-/* Avatar trigger button */
-.user-avatar-btn {
-  width: 36px;
-  height: 36px;
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.profile-avatar {
+  display: block;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  border: 2px solid var(--sepia);
-  overflow: hidden;
-  cursor: pointer;
-  background: var(--saffron);
+  border: 2px solid #E07B39;
+  margin: 0 auto 10px auto;
+  object-fit: cover;
+}
+
+.profile-initials {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--white);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #E07B39;
+  color: #FAF3E0;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  margin: 0 auto 10px auto;
+  border: 2px solid #7B5E3A;
+}
+
+.profile-name {
+  font-family: 'Crimson Pro', serif;
+  font-size: 16px;
+  color: #1A1A2E;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.profile-email {
+  font-family: 'Hind', sans-serif;
+  font-size: 12px;
+  color: #9E9E9E;
+  text-align: center;
+  margin-bottom: 12px;
+  word-break: break-all;
+}
+
+.profile-divider {
+  border: none;
+  border-top: 1px dashed #7B5E3A;
+  margin: 8px 0 12px 0;
+}
+
+.profile-signout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 0;
+  background: transparent;
+  border: 1.5px solid #7B5E3A;
+  border-radius: 4px;
+  font-family: 'Hind', sans-serif;
+  font-size: 14px;
+  color: #7B5E3A;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease, 
+              border-color 200ms ease;
+}
+
+.profile-signout-btn:hover {
+  background: #C0392B;
+  color: #FAF3E0;
+  border-color: #C0392B;
+}
+
+.profile-signout-btn svg {
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
+}
+
+.profile-trigger {
+  position: relative;
+  cursor: pointer;
+}
+
+
+/* ─── Top Profile Image (Trigger) ─── */
+.user-avatar-btn {
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid #7B5E3A;
+  background: #FAF3E0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #E07B39;
   padding: 0;
-  min-width: 36px;
-  min-height: 36px;
+  overflow: hidden;
 }
-.user-avatar-btn:hover {
-  border-color: var(--saffron);
-  box-shadow: 0 0 0 3px rgba(224,123,57,0.25);
-}
+
 .user-avatar-btn img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
   display: block;
 }
-
-/* ── Dropdown Panel ── */
-.user-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 220px;
-  background: var(--khadi);
-  border: 1.5px solid var(--sepia);
-  border-radius: 6px;
-  box-shadow: 4px 4px 12px rgba(123, 94, 58, 0.20);
-  z-index: var(--z-modal);
-  padding: 16px;
-  /* Hidden by default — shown via .open class */
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-  transition: opacity 200ms ease, transform 200ms ease;
-}
-.user-dropdown.open {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* ── Avatar inside dropdown (large, centered) ── */
-.user-dropdown-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid var(--saffron);
-  overflow: hidden;
-  display: block;
-  margin: 0 auto 10px;
-  background: var(--saffron);
-  flex-shrink: 0;
-}
-/* Photo avatar */
-.user-dropdown-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-/* Initials fallback */
-.user-dropdown-avatar-initials {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid var(--saffron);
-  background: var(--saffron);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 10px;
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--white);
-  flex-shrink: 0;
-}
-
-/* ── Name ── */
-.user-dropdown-name {
-  font-family: var(--font-body);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--navy);
-  text-align: center;
-  margin-bottom: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ── Email ── */
-.user-dropdown-email {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--ash);
-  text-align: center;
-  margin-bottom: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ── Dashed Divider ── */
-.user-dropdown-divider {
-  border: none;
-  border-top: 1px dashed var(--sepia);
-  margin: 8px 0;
-}
-
-/* ── Sign Out Button ── */
-.btn-signout {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 0;
-  background: transparent;
-  border: 1.5px solid var(--sepia);
-  border-radius: 4px;
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--sepia);
-  cursor: pointer;
-  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
-  min-height: 40px;
-}
-.btn-signout svg {
-  flex-shrink: 0;
-  color: var(--sepia);
-  transition: color 200ms ease;
-}
-.btn-signout:hover {
-  background: var(--ballot-red);
-  color: var(--white);
-  border-color: var(--ballot-red);
-}
-.btn-signout:hover svg {
-  color: var(--white);
-}
-
-/* ── Wrapper for info + actions inside dropdown ── */
-.user-dropdown-info {
-  /* Info section is now directly in the dropdown card, no extra padding needed */
-}
-.user-dropdown-actions {
-  /* Actions sit directly after the divider */
-}
-
-/* ── Responsive ── */
-@media (max-width: 480px) {
-  .auth-card {
-    padding: var(--space-xl) var(--space-md);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-md);
-  }
-  .user-dropdown {
-    right: -8px; /* slight bleed prevention on narrow screens */
-    min-width: 200px;
-  }
-}
-

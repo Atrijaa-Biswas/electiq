@@ -25,11 +25,7 @@
 </head>
 <body>
 
-  <!-- Mobile translate bar (visible only on < 768px) -->
-  <div class="translate-bar-mobile" aria-label="Language selector">
-    <span class="translate-label" aria-hidden="true">Translate:</span>
-    <div id="google_translate_element_mobile"></div>
-  </div>
+
 
   <!-- ═══ HEADER ═══ -->
   <header class="site-header" role="banner">
@@ -64,7 +60,7 @@
       </nav>
 
       <div class="header-right">
-        <div class="translate-container" aria-label="Language selector">
+        <div id="translate-container">
           <span class="translate-label" aria-hidden="true">Translate:</span>
           <div id="google_translate_element"></div>
         </div>
@@ -258,34 +254,44 @@
           const name     = user.displayName || user.email?.split('@')[0] || 'User';
           const email    = user.email || '';
           const photoURL = user.photoURL || '';
-          const menuEl   = document.createElement('div');
-          menuEl.className = 'user-menu';
+          const wrapEl = document.createElement('div');
+          wrapEl.className = 'profile-trigger';
+          wrapEl.setAttribute('id', 'profile-trigger');
           const avatarHTML = photoURL
-            ? `<div class="user-dropdown-avatar"><img src="${photoURL}" alt="${name}" referrerpolicy="no-referrer"></div>`
-            : `<div class="user-dropdown-avatar-initials">${initials}</div>`;
-          menuEl.innerHTML = `
+            ? `<img class="profile-avatar" src="${photoURL}" alt="${name}" referrerpolicy="no-referrer">`
+            : `<div class="profile-initials">${initials}</div>`;
+          wrapEl.innerHTML = `
             <button class="user-avatar-btn" id="user-avatar-btn" type="button"
               aria-haspopup="true" aria-expanded="false" aria-label="User menu for ${name}">
               ${photoURL ? `<img src="${photoURL}" alt="${name}" referrerpolicy="no-referrer">` : initials}
             </button>
-            <div class="user-dropdown" id="user-dropdown" role="menu" aria-label="User options">
+            <div class="profile-dropdown" id="profile-dropdown" role="menu" aria-label="User options" style="display:none;">
               ${avatarHTML}
-              <div class="user-dropdown-name" title="${name}">${name}</div>
-              <div class="user-dropdown-email" title="${email}">${email}</div>
-              <hr class="user-dropdown-divider">
-              <div class="user-dropdown-actions">
-                <button class="btn-signout" id="btn-signout" type="button" role="menuitem">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                  Sign Out
-                </button>
-              </div>
+              <div class="profile-name" title="${name}">${name}</div>
+              <div class="profile-email" title="${email}">${email}</div>
+              <hr class="profile-divider">
+              <button class="profile-signout-btn" id="btn-signout" type="button" role="menuitem">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Sign Out
+              </button>
             </div>`;
-          headerRight.insertBefore(menuEl, headerRight.firstChild);
+          headerRight.insertBefore(wrapEl, headerRight.firstChild);
           const btn = document.getElementById('user-avatar-btn');
-          const dd  = document.getElementById('user-dropdown');
-          btn.addEventListener('click', e => { e.stopPropagation(); dd.classList.toggle('open'); btn.setAttribute('aria-expanded', dd.classList.contains('open')); });
-          document.addEventListener('click', () => dd.classList.remove('open'));
-          document.addEventListener('keydown', e => { if (e.key === 'Escape') dd.classList.remove('open'); });
+          const dd  = document.getElementById('profile-dropdown');
+          btn.addEventListener('click', e => { 
+            e.stopPropagation(); 
+            const isOpen = dd.style.display === 'block';
+            dd.style.display = isOpen ? 'none' : 'block'; 
+            btn.setAttribute('aria-expanded', !isOpen); 
+          });
+          document.addEventListener('click', (e) => {
+            const dropdown = document.querySelector('.profile-dropdown');
+            const trigger = document.querySelector('.profile-trigger');
+            if (dropdown && trigger && !trigger.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.remove();
+            }
+          });
+          document.addEventListener('keydown', e => { if (e.key === 'Escape') dd.style.display = 'none'; });
           document.getElementById('btn-signout')?.addEventListener('click', () => window.AuthService.signOut());
         }
       }
