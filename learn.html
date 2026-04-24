@@ -48,8 +48,21 @@
       </nav>
       <div class="header-right">
         <div id="translate-container">
-          <span class="translate-label" aria-hidden="true">Translate:</span>
-          <div id="google_translate_element"></div>
+          <label for="custom-translate-select" class="translate-label">Translate:</label>
+          <select id="custom-translate-select" class="custom-translate-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="hi">Hindi (हिंदी)</option>
+            <option value="bn">Bengali (বাংলা)</option>
+            <option value="ta">Tamil (தமிழ்)</option>
+            <option value="te">Telugu (తెలుగు)</option>
+            <option value="mr">Marathi (मराठी)</option>
+            <option value="kn">Kannada (ಕನ್ನಡ)</option>
+            <option value="ml">Malayalam (മലയാളം)</option>
+            <option value="gu">Gujarati (ગુજરાતી)</option>
+            <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+            <option value="ur">Urdu (اردو)</option>
+          </select>
+          <div id="google_translate_element" style="display:none;"></div>
         </div>
       </div>
     </div>

@@ -681,27 +681,21 @@ body {
   top: 0 !important;
 }
 
-/* Style the rendered select/widget */
-.goog-te-gadget-simple {
-  background-color: #FAF3E0 !important;
-  border: 1.5px solid #7B5E3A !important;
-  border-radius: 4px !important;
-  padding: 4px 8px !important;
-  font-family: 'Hind', sans-serif !important;
-  font-size: 13px !important;
-  color: #1A1A2E !important;
-  cursor: pointer !important;
+/* Custom Select UI for Translate */
+.custom-translate-select {
+  background-color: #FAF3E0;
+  border: 1.5px solid #7B5E3A;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'Hind', sans-serif;
+  font-size: 13px;
+  color: #1A1A2E;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
 }
 
-.goog-te-gadget-icon {
-  display: none !important;
-}
-
-.goog-te-menu-value span {
-  color: #1A1A2E !important;
-  font-family: 'Hind', sans-serif !important;
-}
-
-.goog-te-gadget-simple .goog-te-menu-value span:last-child {
-  color: #E07B39 !important;
+.custom-translate-select:focus,
+.custom-translate-select:hover {
+  border-color: #E07B39;
 }
