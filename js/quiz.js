@@ -57,7 +57,7 @@ const generateQuiz = async (moduleIndex) => {
 
   // Check if GeminiAPI is available and has quizPrompt method
   if (!window.GeminiAPI || !window.GeminiAPI.quizPrompt || !window.GeminiAPI.callForJSON) {
-    throw new Error('Gemini API not loaded. Please refresh the page.');
+    throw new Error('AI API not loaded. Please refresh the page.');
   }
 
   const prompt = window.GeminiAPI.quizPrompt(topic);
@@ -65,7 +65,7 @@ const generateQuiz = async (moduleIndex) => {
 
   // Validate the structure
   if (!Array.isArray(questions) || questions.length === 0) {
-    throw new Error('Gemini returned an unexpected quiz format. Please try again.');
+    throw new Error('AI returned an unexpected quiz format. Please try again.');
   }
 
   // Cache the result
@@ -299,7 +299,7 @@ const init = async () => {
     container.innerHTML = `
       <div class="quiz-loading">
         <div class="spinner" aria-label="Generating quiz questions"></div>
-        <p>Gemini is crafting your quiz questions…</p>
+        <p>Generating your quiz questions…</p>
       </div>
     `;
   }
@@ -314,7 +314,7 @@ const init = async () => {
         <div class="error-card" role="alert">
           <strong>Quiz generation failed.</strong><br>
           ${err.message}<br><br>
-          Please ensure your Gemini API key is correctly set in js/config.js, then
+          Please ensure your Groq API key is correctly set in js/config.js, then
           <a href="quiz.html?module=${_moduleIndex}">try again</a>.
         </div>
       `;

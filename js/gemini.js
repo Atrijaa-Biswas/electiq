@@ -1,62 +1,54 @@
 /**
- * gemini.js — All Google Gemini API interactions
+ * gemini.js — AI API interactions (powered by Groq)
  *
- * Responsibilities:
- * - Single function to call Gemini API
- * - Input sanitization (strip HTML, limit length)
- * - Debouncing to prevent rapid-fire requests
- * - Response caching via sessionStorage
- * - Graceful error handling with full console logging for debugging
+ * Drop-in replacement for the original Gemini implementation.
+ * Exposes the exact same window.GeminiAPI interface so quiz.js,
+ * learn.js, and every other consumer works without changes.
  *
- * Model: gemini-2.0-flash  (current stable, fast, free-tier supported)
- * API version: v1           (stable — v1beta dropped support for older model paths)
- * Endpoint: https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent
+ * Model : llama-3.3-70b-versatile  (fast, free-tier, great reasoning)
+ * Endpoint: https://api.groq.com/openai/v1/chat/completions  (OpenAI-compatible)
  */
 
 const GeminiAPI = (() => {
-  // ─── Constants ────────────────────────────────────────────────────────────
+  // ─── Constants ─────────────────────────────────────────────────────────────
 
-  const MODEL        = 'gemini-2.0-flash';
-  const API_VERSION  = 'v1';
-  const BASE_URL     = 'https://generativelanguage.googleapis.com';
+  const MODEL    = 'llama-3.3-70b-versatile';
+  const BASE_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
   // Track in-flight requests to prevent simultaneous duplicate calls
   let _activeRequest = false;
   let _debounceTimer = null;
 
-  // ─── Input Sanitization ───────────────────────────────────────────────────
+  // ─── Input Sanitization ────────────────────────────────────────────────────
 
   /**
-   * Sanitizes user input before sending to Gemini.
-   * Strips HTML tags and enforces 500-char limit.
+   * Strips HTML tags and enforces 500-char limit — identical to original.
    */
   const sanitizeInput = (text) => {
     if (typeof text !== 'string') return '';
     return text.replace(/<[^>]*>/g, '').trim().slice(0, 500);
   };
 
-  // ─── Cache Key ────────────────────────────────────────────────────────────
+  // ─── Cache Key ─────────────────────────────────────────────────────────────
 
   const cacheKey = (prefix, identifier) =>
-    `electiq_gemini_${prefix}_${btoa(encodeURIComponent(identifier)).slice(0, 40)}`;
+    `electiq_groq_${prefix}_${btoa(encodeURIComponent(identifier)).slice(0, 40)}`;
 
-  // ─── Core API Call ────────────────────────────────────────────────────────
+  // ─── Core API Call ─────────────────────────────────────────────────────────
 
   /**
-   * Core Gemini API call using the REST endpoint.
+   * Calls the Groq chat-completions endpoint.
    *
-   * Endpoint: POST /v1/models/gemini-2.0-flash:generateContent?key=...
-   *
-   * @param {string} systemPrompt — sets AI persona and constraints
-   * @param {string} userMessage  — the actual user question
-   * @param {string} cachePrefix  — if provided, caches result in sessionStorage
-   * @returns {Promise<string>}   — the Gemini text response
+   * @param {string} systemPrompt  — sets AI persona and constraints
+   * @param {string} userMessage   — the actual user question
+   * @param {string} cachePrefix   — if provided, caches result in sessionStorage
+   * @returns {Promise<string>}    — the AI text response
    */
   const call = async (systemPrompt, userMessage, cachePrefix = null) => {
     // ── Validate API key ──
-    const apiKey = window.ELECTIQ_CONFIG?.geminiApiKey;
-    if (!apiKey || apiKey === 'YOUR_GEMINI_API_KEY_HERE') {
-      throw new Error('Gemini API key is not configured. Please set geminiApiKey in js/config.js.');
+    const apiKey = window.ELECTIQ_CONFIG?.groqApiKey;
+    if (!apiKey || apiKey === 'YOUR_GROQ_API_KEY_HERE') {
+      throw new Error('Groq API key is not configured. Please set groqApiKey in js/config.js.');
     }
 
     const cleanMessage = sanitizeInput(userMessage);
@@ -75,54 +67,37 @@ const GeminiAPI = (() => {
 
     _activeRequest = true;
 
-    // ── Build endpoint ──
-    // Using v1 (stable) with gemini-2.0-flash
-    const endpoint = `${BASE_URL}/${API_VERSION}/models/${MODEL}:generateContent?key=${apiKey}`;
-
-    // ── Build request body ──
-    // Format: contents → role: user → parts → text
-    // System instruction is prepended as part of the user turn since
-    // the REST v1 endpoint does not accept a separate systemInstruction field
-    // in the same way the SDK does — this approach works reliably across all clients.
+    // ── Build request payload (OpenAI-compatible format) ──
     const payload = {
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: `${systemPrompt}\n\n${cleanMessage}`
-            }
-          ]
-        }
+      model: MODEL,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user',   content: cleanMessage }
       ],
-      generationConfig: {
-        temperature:      0.7,
-        maxOutputTokens:  1024,
-        topP:             0.95
-      },
-      safetySettings: [
-        { category: 'HARM_CATEGORY_HARASSMENT',        threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-        { category: 'HARM_CATEGORY_HATE_SPEECH',       threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-        { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
-      ]
+      temperature:  0.7,
+      max_tokens:   1024,
+      top_p:        0.95
     };
 
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch(BASE_URL, {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload)
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload)
       });
 
-      // ── Error handling with full logging ──
+      // ── Error handling ──
       if (!response.ok) {
         let errData = {};
         try { errData = await response.json(); } catch (_) {}
 
         const apiMsg = errData?.error?.message || `HTTP ${response.status} ${response.statusText}`;
-        console.error('[GeminiAPI] Request failed:', {
+        console.error('[GroqAPI] Request failed:', {
           status:   response.status,
-          endpoint,
+          endpoint: BASE_URL,
           model:    MODEL,
           apiError: errData
         });
@@ -130,22 +105,15 @@ const GeminiAPI = (() => {
       }
 
       const data = await response.json();
+      console.debug('[GroqAPI] Response received:', data);
 
-      // Log raw response in dev for debugging (harmless in production)
-      console.debug('[GeminiAPI] Response received:', data);
-
-      // ── Extract text from response ──
-      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      // ── Extract text from OpenAI-compatible response ──
+      const text = data?.choices?.[0]?.message?.content;
 
       if (!text) {
-        const blockReason = data?.candidates?.[0]?.finishReason;
-        const safetyRatings = data?.candidates?.[0]?.safetyRatings;
-        console.error('[GeminiAPI] No text in response:', { blockReason, safetyRatings, data });
-        throw new Error(
-          blockReason === 'SAFETY'
-            ? 'Response blocked by safety filters. Please rephrase your question.'
-            : 'No response received from Gemini. Please try again.'
-        );
+        const finishReason = data?.choices?.[0]?.finish_reason;
+        console.error('[GroqAPI] No text in response:', { finishReason, data });
+        throw new Error('No response received from Groq. Please try again.');
       }
 
       // ── Cache the result ──
@@ -161,11 +129,11 @@ const GeminiAPI = (() => {
     }
   };
 
-  // ─── Debounced Call ───────────────────────────────────────────────────────
+  // ─── Debounced Call ────────────────────────────────────────────────────────
 
   /**
    * Debounced version — used for chat inputs.
-   * Waits 500ms after last keystroke before calling API.
+   * Waits 500 ms after last keystroke before calling API.
    */
   const callDebounced = (systemPrompt, userMessage, callback, delay = 500) => {
     clearTimeout(_debounceTimer);
@@ -179,11 +147,12 @@ const GeminiAPI = (() => {
     }, delay);
   };
 
-  // ─── JSON Response Call ───────────────────────────────────────────────────
+  // ─── JSON Response Call ────────────────────────────────────────────────────
 
   /**
-   * Calls Gemini and expects a JSON response.
-   * Strips markdown code fences that Gemini sometimes wraps around JSON.
+   * Calls Groq and expects a JSON response.
+   * Strips markdown code fences that models sometimes add despite instructions.
+   *
    * @param {string} prompt       — full prompt requesting JSON output
    * @param {string} cachePrefix  — for sessionStorage caching
    * @returns {Promise<any>}      — parsed JSON object/array
@@ -195,7 +164,7 @@ const GeminiAPI = (() => {
       cachePrefix
     );
 
-    // Strip ```json ... ``` fences Gemini sometimes adds despite instructions
+    // Strip ```json … ``` fences models sometimes add despite instructions
     const cleaned = rawText
       .replace(/^```(?:json)?\s*/i, '')
       .replace(/\s*```\s*$/i, '')
@@ -204,12 +173,12 @@ const GeminiAPI = (() => {
     try {
       return JSON.parse(cleaned);
     } catch (parseErr) {
-      console.error('[GeminiAPI] JSON parse failed. Raw response:', rawText);
-      throw new Error('Gemini returned an unexpected format. Please try again.');
+      console.error('[GroqAPI] JSON parse failed. Raw response:', rawText);
+      throw new Error('AI returned an unexpected format. Please try again.');
     }
   };
 
-  // ─── Prompt Factories ─────────────────────────────────────────────────────
+  // ─── Prompt Factories (identical to original) ──────────────────────────────
 
   /**
    * Flowmap chat system prompt — scoped to a specific election stage.
@@ -237,7 +206,7 @@ const GeminiAPI = (() => {
   const scorePrompt = (score, total, topic) =>
     `A first-time voter just completed a quiz on "${topic}" in Indian elections and scored ${score} out of ${total}. Write a short, warm, encouraging message (2-3 sentences) acknowledging their score and motivating them to keep learning. Be friendly and genuine. Plain text only, no markdown.`;
 
-  // ─── Public API ───────────────────────────────────────────────────────────
+  // ─── Public API ────────────────────────────────────────────────────────────
 
   return {
     call,
@@ -251,5 +220,5 @@ const GeminiAPI = (() => {
   };
 })();
 
-// Expose globally for use across all page scripts
+// Expose globally — same name as before so all other scripts work unchanged
 window.GeminiAPI = GeminiAPI;
