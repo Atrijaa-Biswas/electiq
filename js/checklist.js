@@ -30,8 +30,13 @@ const generateChecklist = async () => {
     } catch (_) { /* ignore corrupt cache */ }
   }
 
+  // Check if GeminiAPI is available and has checklistPrompt method
+  if (!window.GeminiAPI || !window.GeminiAPI.checklistPrompt || !window.GeminiAPI.callForJSON) {
+    throw new Error('Gemini API not loaded. Please refresh the page.');
+  }
+
   const prompt = window.GeminiAPI.checklistPrompt();
-  const items = await window.GeminiAPI.callForJSON(prompt);
+  const items = await window.GeminiAPI.callForJSON(prompt, 'checklist');
 
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error('Gemini returned an unexpected checklist format. Please try refreshing.');

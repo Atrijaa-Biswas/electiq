@@ -55,8 +55,13 @@ const generateQuiz = async (moduleIndex) => {
     } catch (_) { /* ignore corrupt cache */ }
   }
 
+  // Check if GeminiAPI is available and has quizPrompt method
+  if (!window.GeminiAPI || !window.GeminiAPI.quizPrompt || !window.GeminiAPI.callForJSON) {
+    throw new Error('Gemini API not loaded. Please refresh the page.');
+  }
+
   const prompt = window.GeminiAPI.quizPrompt(topic);
-  const questions = await window.GeminiAPI.callForJSON(prompt);
+  const questions = await window.GeminiAPI.callForJSON(prompt, `quiz_${moduleIndex}`);
 
   // Validate the structure
   if (!Array.isArray(questions) || questions.length === 0) {
