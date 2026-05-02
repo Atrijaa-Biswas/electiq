@@ -7,7 +7,7 @@
 
 ---
 
-## Project Overview
+## 📖 Project Overview
 
 ElectIQ is a production-ready, dual-mode interactive election education platform built for Indian voters — especially first-time voters. It combines visual exploration with structured learning and AI-powered assessment, all wrapped in a vintage civic handbook aesthetic that honours the weight and history of Indian democracy.
 
@@ -20,7 +20,7 @@ ElectIQ is a production-ready, dual-mode interactive election education platform
 
 ---
 
-## Google Services Used
+## 🛠️ Google Services Used
 
 | Service | How It's Used |
 |---------|--------------|
@@ -34,7 +34,7 @@ ElectIQ is a production-ready, dual-mode interactive election education platform
 
 ---
 
-## Architecture
+## 🏗️ Architecture
 
 ```
 ElectIQ/
@@ -72,7 +72,7 @@ ElectIQ/
 
 ---
 
-## How the Solution Works
+## ⚙️ How the Solution Works
 
 ### Flow Map
 1. User opens `flowmap.html` — the `flowmap.js` module renders 7 node cards in three colour-coded phase groups (Pre-Election in Saffron, Election Day in Green, Post-Election in Navy)
@@ -95,7 +95,7 @@ ElectIQ/
 
 ---
 
-## Local Setup
+## 💻 Local Setup
 
 ### Prerequisites
 - A modern web browser (Chrome, Firefox, Safari, Edge)
@@ -106,7 +106,7 @@ ElectIQ/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/electiq.git
+   git clone https://github.com/Atrijaa-Biswas/electiq.git
    cd electiq
    ```
 
@@ -136,7 +136,7 @@ ElectIQ/
 
 ---
 
-## Firebase Hosting Deployment
+## 🚀 Firebase Hosting Deployment
 
 1. **Install Firebase CLI**
    ```bash
@@ -175,7 +175,7 @@ ElectIQ/
 
 ---
 
-## Authentication
+## 🔒 Authentication
 
 ### Why Proper Auth (not anonymous sessions)
 
@@ -223,7 +223,7 @@ This means:
 
 ---
 
-## Security Notes
+## 🛡️ Security Notes
 
 - `js/config.js` is listed in `.gitignore` — never commit it
 - All user input is sanitized (HTML stripped, 500-char limit) before reaching Gemini
@@ -235,7 +235,7 @@ This means:
 
 ---
 
-## Assumptions Made
+## 🤔 Assumptions Made
 
 1. Users have modern browsers (ES6+ module support)
 2. Gemini API key has sufficient quota for quiz/chat usage
@@ -247,28 +247,13 @@ This means:
 
 ---
 
-## Design Philosophy
+## 🎨 Design Philosophy
 
 The UI aesthetic is inspired by post-independence Indian civic documents — aged parchment backgrounds, sepia ink borders, Playfair Display headlines, and Ashoka Chakra watermarks. All animations are slow and deliberate (no flashy effects). The design passes WCAG AA contrast requirements and is fully keyboard navigable.
 
 ---
 
-## Screenshots
-
-> *(Add screenshots after deployment)*
-
-| Page | Screenshot |
-|------|-----------|
-| Landing Page | _[placeholder]_ |
-| Flow Map | _[placeholder]_ |
-| Dossier Panel + Gemini Chat | _[placeholder]_ |
-| Lesson Module | _[placeholder]_ |
-| Quiz | _[placeholder]_ |
-| Voter Readiness Certificate | _[placeholder]_ |
-
----
-
-## License
+## 📜 License
 
 MIT License — see [LICENSE](LICENSE) for details.
 
